@@ -1,11 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("🛡️ Scam Shield loaded.");
 
-    const button = document.querySelector("button");
+    const button = document.getElementById("scanButton");
 
-    if (button) {
-        button.addEventListener("click", () => {
-            alert("Website scanning will be added in the next milestone.");
-        });
-    }
+    button.addEventListener("click", () => {
+
+        chrome.runtime.sendMessage(
+            {
+                action: "scan"
+            },
+            (response) => {
+
+                if (!response) {
+
+                    alert("No response received.");
+
+                    return;
+
+                }
+
+                alert(
+
+                    "Website: " + response.title +
+
+                    "\n\nURL: " + response.url +
+
+                    "\n\nHTTPS: " + response.https +
+
+                    "\n\nForms: " + response.forms +
+
+                    "\n\nImages: " + response.images +
+
+                    "\n\nLinks: " + response.links
+
+                );
+
+            }
+        );
+
+    });
+
 });
