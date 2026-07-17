@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+{
+  "manifest_version": 3,
+  "name": "Scam Shield",
+  "short_name": "Scam Shield",
+  "version": "1.0.0",
+  "description": "Know before you trust. Scam Shield helps users evaluate website trustworthiness using explainable rule-based analysis.",
+  "author": "Arthiva Labs",
 
-<head>
+  "action": {
+    "default_title": "Scam Shield",
+    "default_popup": "src/popup/popup.html"
+  },
 
-    <meta charset="UTF-8">
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Scam Shield</title>
-
-    <link rel="stylesheet"
-          href="popup.css">
-
-</head>
-
-<body>
-
-    <h1>🛡️ Scam Shield</h1>
-
-    <p>
-
-        Know before you trust.
-
-    </p>
-
-    <button id="scanButton">
-
-        Scan Website
-
-    </button>
-
-    <script src="popup.js"></script>
-
-</body>
-
-</html>
+  "host_permissions": [
+    "<all_urls>"
+  ]
+}
