@@ -11,13 +11,29 @@
     "default_popup": "src/popup/popup.html"
   },
 
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+
   "permissions": [
     "activeTab",
     "storage",
-    "scripting"
+    "scripting",
+    "tabs"
   ],
 
   "host_permissions": [
     "<all_urls>"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/content/scanner.js"
+      ]
+    }
   ]
 }
