@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Explore browser extensions by Arthiva Labs — practical tools designed to make everyday online experiences safer, simpler, and smarter."
+    >
+
+    <title>Browser Extensions | Arthiva Labs</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+            background: #f8f7f2;
+            color: #183c32;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* --------------------------------
+           HEADER
+        -------------------------------- */
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e7e2d5;
+        }
+
+        .nav {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 20px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #f1eee4;
+            font-size: 21px;
+        }
+
+        .brand-text h1 {
+            margin: 0;
+            font-size: 19px;
+            color: #0e5a44;
+        }
+
+        .brand-text p {
+            margin: 3px 0 0;
+            font-size: 11px;
+            color: #8a7444;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            color: #53635d;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            color: #0e5a44;
+        }
+
+
+        /* --------------------------------
+           HERO
+        -------------------------------- */
+
+        .hero {
+            padding: 95px 28px 85px;
+            text-align: center;
+            background:
+                linear-gradient(
+                    180deg,
+                    #ffffff 0%,
+                    #f8f7f2 100%
+                );
+        }
+
+        .hero-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            margin: 0 0 18px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #9b7d38;
+            text-transform: uppercase;
+        }
+
+        .hero h2 {
+            margin: 0;
+            font-size: 48px;
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            color: #173f34;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            margin: 24px auto 0;
+            font-size: 17px;
+            line-height: 1.7;
+            color: #64726c;
+        }
+
+        .hero-note {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 9px 15px;
+            border: 1px solid #ded4b8;
+            border-radius: 999px;
+            background: #ffffff;
+            color: #8a7444;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* --------------------------------
+           EXTENSIONS SECTION
+        -------------------------------- */
+
+        .extensions-section {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 80px 28px;
+        }
+
+        .section-heading {
+            max-width: 650px;
+            margin-bottom: 38px;
+        }
+
+        .section-heading p {
+            margin: 0 0 10px;
+            color: #9b7d38;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 32px;
+            color: #173f34;
+        }
+
+
+        /* --------------------------------
+           SCAM SHIELD FEATURE CARD
+        -------------------------------- */
+
+        .extension-card {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1.4fr)
+                minmax(260px, 0.6fr);
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e3ded0;
+            border-radius: 22px;
+            box-shadow:
+                0 12px 35px
+                rgba(23, 63, 52, 0.07);
+        }
+
+        .extension-main {
+            padding: 42px;
+        }
+
+        .extension-title-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .extension-icon {
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: #f1eee4;
+            font-size: 30px;
+        }
+
+        .extension-title h3 {
+            margin: 0;
+            font-size: 26px;
+            color: #0e5a44;
+        }
+
+        .extension-title p {
+            margin: 5px 0 0;
+            color: #8a7444;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .extension-description {
+            max-width: 590px;
+            margin: 25px 0 0;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #64726c;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+            gap: 12px 20px;
+            margin-top: 27px;
+        }
+
+        .feature {
+            position: relative;
+            padding-left: 21px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #53635d;
+        }
+
+        .feature::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #9b7d38;
+            font-weight: 800;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .primary-button {
+            display: inline-block;
+            padding: 13px 21px;
+            border-radius: 10px;
+            background: #0e5a44;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .primary-button:hover {
+            background: #0a4937;
+        }
+
+        .status-text {
+            font-size: 11px;
+            color: #8a928e;
+        }
+
+
+        /* --------------------------------
+           PRICING SIDE
+        -------------------------------- */
+
+        .extension-price {
+            padding: 42px 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #f5f1e6;
+            border-left: 1px solid #e3dac2;
+        }
+
+        .price-label {
+            margin: 0 0 8px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            font-weight: 800;
+            color: #9b7d38;
+        }
+
+        .extension-price h4 {
+            margin: 0;
+            font-size: 20px;
+            color: #173f34;
+        }
+
+        .price {
+            margin-top: 20px;
+            font-size: 38px;
+            line-height: 1;
+            font-weight: 800;
+            color: #0e5a44;
+        }
+
+        .price span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #7b8782;
+        }
+
+        .price-description {
+            margin: 14px 0 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #697670;
+        }
+
+        .free-note {
+            margin: 20px 0 0;
+            padding-top: 18px;
+            border-top: 1px solid #ded4b8;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #7b8782;
+        }
+
+
+        /* --------------------------------
+           COMING SOON
+        -------------------------------- */
+
+        .coming-soon {
+            margin-top: 28px;
+            padding: 30px;
+            text-align: center;
+            border: 1px dashed #d8d0bd;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .coming-soon h3 {
+            margin: 0;
+            font-size: 17px;
+            color: #173f34;
+        }
+
+        .coming-soon p {
+            max-width: 500px;
+            margin: 9px auto 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #7b8782;
+        }
+
+
+        /* --------------------------------
+           MISSION
+        -------------------------------- */
+
+        .mission {
+            padding: 75px 28px;
+            background: #173f34;
+            text-align: center;
+        }
+
+        .mission-inner {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .mission p:first-child {
+            margin: 0 0 12px;
+            color: #d4bd82;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .mission h2 {
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.35;
+            color: #ffffff;
+        }
+
+        .mission-description {
+            margin: 20px auto 0;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #c9d2ce;
+        }
+
+
+        /* --------------------------------
+           FOOTER
+        -------------------------------- */
+
+        .footer {
+            padding: 30px 28px;
+            background: #ffffff;
+            border-top: 1px solid #e7e2d5;
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-brand {
+            font-size: 12px;
+            color: #0e5a44;
+            font-weight: 700;
+        }
+
+        .footer-text {
+            font-size: 10px;
+            color: #8a928e;
+        }
+
+
+        /* --------------------------------
+           RESPONSIVE
+        -------------------------------- */
+
+        @media (max-width: 760px) {
+
+            .hero {
+                padding: 70px 22px 65px;
+            }
+
+            .hero h2 {
+                font-size: 37px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .extensions-section {
+                padding: 60px 20px;
+            }
+
+            .extension-card {
+                grid-template-columns: 1fr;
+            }
+
+            .extension-main {
+                padding: 30px 24px;
+            }
+
+            .extension-price {
+                padding: 28px 24px;
+                border-left: none;
+                border-top: 1px solid #e3dac2;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <nav class="nav">
+
+            <div class="brand">
+
+                <div class="brand-mark">
+                    A
+                </div>
+
+                <div class="brand-text">
+
+                    <h1>
+                        Arthiva Labs
+                    </h1>
+
+                    <p>
+                        Browser Extensions
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a
+                class="nav-link"
+                href="#extensions"
+            >
+                Explore Extensions
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-inner">
+
+            <p class="eyebrow">
+                Arthiva Labs
+            </p>
+
+            <h2>
+                Helpful tools,
+                right where you browse.
+            </h2>
+
+            <p class="hero-description">
+                Practical browser extensions designed
+                to make everyday online experiences
+                safer, simpler, and smarter.
+            </p>
+
+            <div class="hero-note">
+                Built by Arthiva Labs
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXTENSIONS -->
+
+    <main
+        id="extensions"
+        class="extensions-section"
+    >
+
+        <div class="section-heading">
+
+            <p>
+                Our Extensions
+            </p>
+
+            <h2>
+                Tools built for the real internet.
+            </h2>
+
+        </div>
+
+
+        <!-- SCAM SHIELD -->
+
+        <article class="extension-card">
+
+            <div class="extension-main">
+
+                <div class="extension-title-row">
+
+                    <div class="extension-icon">
+                        🛡️
+                    </div>
+
+                    <div class="extension-title">
+
+                        <h3>
+                            Scam Shield
+                        </h3>
+
+                        <p>
+                            Know before you trust.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <p class="extension-description">
+                    Scam Shield helps you examine the
+                    website you're visiting for common
+                    scam and trust risk signals before
+                    you decide whether to trust it.
+                </p>
+
+
+                <div class="features">
+
+                    <div class="feature">
+                        Website trust scoring
+                    </div>
+
+                    <div class="feature">
+                        Scam risk signals
+                    </div>
+
+                    <div class="feature">
+                        Suspicious domain checks
+                    </div>
+
+                    <div class="feature">
+                        Secure connection analysis
+                    </div>
+
+                    <div class="feature">
+                        External link detection
+                    </div>
+
+                    <div class="feature">
+                        Clear risk explanations
+                    </div>
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <a
+                        class="primary-button"
+                        href="#"
+                    >
+                        Explore Scam Shield
+                    </a>
+
+                    <span class="status-text">
+                        Chrome extension coming soon
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <aside class="extension-price">
+
+                <p class="price-label">
+                    SCAM SHIELD PRO
+                </p>
+
+                <h4>
+                    More protection.
+                    No subscription.
+                </h4>
+
+                <div class="price">
+                    ₹199
+                    <span>
+                        one-time
+                    </span>
+                </div>
+
+                <p class="price-description">
+                    Unlock unlimited scans and
+                    advanced Scam Shield protection.
+                </p>
+
+                <p class="free-note">
+                    A Free plan with limited daily
+                    scans is also available.
+                </p>
+
+            </aside>
+
+        </article>
+
+
+        <!-- FUTURE EXTENSIONS -->
+
+        <div class="coming-soon">
+
+            <h3>
+                More Arthiva extensions are coming.
+            </h3>
+
+            <p>
+                We're building a growing collection
+                of focused browser tools designed to
+                solve practical everyday problems.
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- MISSION -->
+
+    <section class="mission">
+
+        <div class="mission-inner">
+
+            <p>
+                The Arthiva Approach
+            </p>
+
+            <h2>
+                Small tools that solve
+                meaningful problems.
+            </h2>
+
+            <p class="mission-description">
+                Arthiva Labs builds focused digital
+                products designed around usefulness,
+                accessibility, and simple experiences.
+                Our browser extensions bring that same
+                philosophy directly into your browser.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                Arthiva Labs
+            </div>
+
+            <div class="footer-text">
+                Browser Extensions by Arthiva Labs
+            </div>
+
+        </div>
+
+    </footer>
+
+
+</body>
+
+</html>
