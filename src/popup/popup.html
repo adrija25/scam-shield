@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -20,7 +21,9 @@
 
     <main class="app">
 
-        <!-- HEADER -->
+        <!-- =========================================
+             HEADER
+        ========================================== -->
 
         <header class="header">
 
@@ -31,22 +34,32 @@
                 </div>
 
                 <div>
-                    <h1>Scam Shield</h1>
+
+                    <h1>
+                        Scam Shield
+                    </h1>
+
                     <p class="brand-name">
                         by Arthiva Labs
                     </p>
+
                 </div>
 
             </div>
 
-            <p class="tagline">
-                Know before you trust.
-            </p>
+            <div
+                id="planBadge"
+                class="plan-badge"
+            >
+                FREE
+            </div>
 
         </header>
 
 
-        <!-- INITIAL SCAN VIEW -->
+        <!-- =========================================
+             INITIAL SCAN VIEW
+        ========================================== -->
 
         <section
             id="scanView"
@@ -55,16 +68,57 @@
 
             <div class="intro">
 
+                <p class="tagline">
+                    Know before you trust.
+                </p>
+
                 <h2>
                     Can you trust this website?
                 </h2>
 
-                <p>
+                <p class="intro-text">
                     Scan the current page for common
                     scam and trust risk signals.
                 </p>
 
             </div>
+
+
+            <!-- FREE PLAN STATUS -->
+
+            <div class="plan-status-card">
+
+                <div>
+
+                    <p class="plan-status-label">
+                        Your plan
+                    </p>
+
+                    <p
+                        id="currentPlanName"
+                        class="plan-status-name"
+                    >
+                        Scam Shield Free
+                    </p>
+
+                </div>
+
+                <div class="scan-allowance">
+
+                    <strong id="scansRemaining">
+                        --
+                    </strong>
+
+                    <span>
+                        scans left today
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SCAN BUTTON -->
 
             <button
                 id="scanButton"
@@ -79,10 +133,93 @@
                 to scan the current page.
             </p>
 
+
+            <!-- PRO UPGRADE CARD -->
+
+            <div
+                id="upgradeCard"
+                class="upgrade-card"
+            >
+
+                <div class="upgrade-header">
+
+                    <div>
+
+                        <p class="pro-label">
+                            SCAM SHIELD PRO
+                        </p>
+
+                        <h3>
+                            Stronger protection.
+                            One simple payment.
+                        </h3>
+
+                    </div>
+
+                    <div class="pro-price">
+
+                        <strong>
+                            ₹199
+                        </strong>
+
+                        <span>
+                            one-time
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <ul class="pro-features">
+
+                    <li>
+                        Unlimited website scans
+                    </li>
+
+                    <li>
+                        Advanced scam explanations
+                    </li>
+
+                    <li>
+                        Fake recruiter detection
+                    </li>
+
+                    <li>
+                        Shopping safety analysis
+                    </li>
+
+                    <li>
+                        Payment risk analysis
+                    </li>
+
+                    <li>
+                        Priority detection updates
+                    </li>
+
+                </ul>
+
+
+                <button
+                    id="upgradeButton"
+                    class="upgrade-button"
+                    type="button"
+                >
+                    Upgrade to Pro
+                </button>
+
+                <p class="upgrade-note">
+                    One-time purchase. No subscription.
+                </p>
+
+            </div>
+
         </section>
 
 
-        <!-- LOADING VIEW -->
+        <!-- =========================================
+             LOADING VIEW
+        ========================================== -->
 
         <section
             id="loadingView"
@@ -103,7 +240,9 @@
         </section>
 
 
-        <!-- RESULTS VIEW -->
+        <!-- =========================================
+             RESULTS VIEW
+        ========================================== -->
 
         <section
             id="resultsView"
@@ -133,6 +272,8 @@
             </div>
 
 
+            <!-- WEBSITE -->
+
             <div class="domain-card">
 
                 <p class="section-label">
@@ -148,6 +289,8 @@
 
             </div>
 
+
+            <!-- REASONS -->
 
             <div class="reasons-card">
 
@@ -166,6 +309,8 @@
             </div>
 
 
+            <!-- SCAN DETAILS -->
+
             <div class="scan-details">
 
                 <h2>
@@ -173,18 +318,63 @@
                 </h2>
 
                 <div class="detail-row">
-                    <span>Secure connection</span>
-                    <strong id="httpsStatus">--</strong>
+
+                    <span>
+                        Secure connection
+                    </span>
+
+                    <strong id="httpsStatus">
+                        --
+                    </strong>
+
                 </div>
 
                 <div class="detail-row">
-                    <span>Forms detected</span>
-                    <strong id="formsCount">--</strong>
+
+                    <span>
+                        Forms detected
+                    </span>
+
+                    <strong id="formsCount">
+                        --
+                    </strong>
+
                 </div>
 
                 <div class="detail-row">
-                    <span>External links</span>
-                    <strong id="externalLinksCount">--</strong>
+
+                    <span>
+                        External links
+                    </span>
+
+                    <strong id="externalLinksCount">
+                        --
+                    </strong>
+
+                </div>
+
+                <div class="detail-row">
+
+                    <span>
+                        Password fields
+                    </span>
+
+                    <strong id="passwordFieldsCount">
+                        --
+                    </strong>
+
+                </div>
+
+                <div class="detail-row">
+
+                    <span>
+                        Payment fields
+                    </span>
+
+                    <strong id="paymentFieldsCount">
+                        --
+                    </strong>
+
                 </div>
 
             </div>
@@ -201,7 +391,9 @@
         </section>
 
 
-        <!-- ERROR VIEW -->
+        <!-- =========================================
+             ERROR VIEW
+        ========================================== -->
 
         <section
             id="errorView"
@@ -231,9 +423,52 @@
         </section>
 
 
-        <!-- FOOTER -->
+        <!-- =========================================
+             FOOTER NAVIGATION
+        ========================================== -->
 
         <footer class="footer">
+
+            <button
+                id="settingsButton"
+                class="footer-link"
+                type="button"
+            >
+                Settings
+            </button>
+
+            <span class="footer-divider">
+                •
+            </span>
+
+            <button
+                id="privacyButton"
+                class="footer-link"
+                type="button"
+            >
+                Privacy
+            </button>
+
+            <span class="footer-divider">
+                •
+            </span>
+
+            <button
+                id="termsButton"
+                class="footer-link"
+                type="button"
+            >
+                Terms
+            </button>
+
+        </footer>
+
+
+        <!-- =========================================
+             PRODUCT FOOTER
+        ========================================== -->
+
+        <div class="product-footer">
 
             <span>
                 Scam Shield
@@ -247,7 +482,7 @@
                 Arthiva Labs
             </span>
 
-        </footer>
+        </div>
 
     </main>
 
@@ -255,4 +490,5 @@
     <script src="popup.js"></script>
 
 </body>
+
 </html>
