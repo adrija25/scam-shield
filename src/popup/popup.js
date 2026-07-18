@@ -41,15 +41,24 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
+                const reasons =
+                    response.reasons &&
+                    response.reasons.length > 0
+                        ? response.reasons.join("\n• ")
+                        : "No major risk signals detected.";
+
                 alert(
-                    "Website: " + response.title +
+                    "SCAM SHIELD RESULTS" +
+                    "\n\nTrust Score: " + response.score + "/100" +
+                    "\nStatus: " + response.status +
+                    "\n\nWebsite: " + response.title +
                     "\n\nDomain: " + response.hostname +
-                    "\n\nURL: " + response.url +
                     "\n\nHTTPS: " + (response.https ? "Yes" : "No") +
                     "\n\nForms: " + response.forms +
-                    "\n\nImages: " + response.images +
                     "\n\nLinks: " + response.links +
-                    "\n\nExternal Links: " + response.externalLinks
+                    "\n\nExternal Links: " + response.externalLinks +
+                    "\n\nWhy:" +
+                    "\n• " + reasons
                 );
 
             }
