@@ -25,25 +25,32 @@ const SCAN_TIMEOUT_MS = 30000;
 
 function withTimeout(promise, milliseconds) {
 
-    return Promise.race([
+    let timeoutId;
 
-        promise,
-
+    const timeoutPromise =
         new Promise((_, reject) => {
 
-            setTimeout(() => {
+            timeoutId =
+                setTimeout(() => {
 
-                reject(
-                    new Error(
-                        "The website scan took too long. Please try again."
-                    )
-                );
+                    reject(
+                        new Error(
+                            "The website scan took too long. Please try again."
+                        )
+                    );
 
-            }, milliseconds);
+                }, milliseconds);
 
-        })
+        });
 
-    ]);
+    return Promise.race([
+        promise,
+        timeoutPromise
+    ]).finally(() => {
+
+        clearTimeout(timeoutId);
+
+    });
 
 }
 
@@ -150,8 +157,12 @@ async function handleScan(sendResponse) {
                     // EXTERNAL LINKS
                     // ---------------------------------
 
-                    const externalLinks =
+                    const linksToInspect =
                         Array.from(document.links)
+                            .slice(0, 2000);
+
+                    const externalLinks =
+                        linksToInspect
                             .filter((link) => {
 
                                 try {
@@ -211,7 +222,11 @@ async function handleScan(sendResponse) {
                             document.querySelectorAll(
                                 "input"
                             )
-                        );
+                        )
+                            .slice(
+                                0,
+                                1000
+                            );
 
 
                     const paymentFields =
@@ -256,7 +271,7 @@ async function handleScan(sendResponse) {
                             .toLowerCase()
                             .slice(
                                 0,
-                                100000
+                                50000
                             );
 
 
@@ -310,7 +325,7 @@ async function handleScan(sendResponse) {
 
 
         // -----------------------------------------
-        // APPLY 10 SECOND TIMEOUT
+        // APPLY SCAN TIMEOUT
         // -----------------------------------------
 
         const results =
