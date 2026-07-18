@@ -322,6 +322,139 @@ body {
 
 
 /* --------------------------------
+   PRO ACTIVATION
+-------------------------------- */
+
+.activation-card {
+    margin-top: 14px;
+    padding: 16px;
+    background: #faf7ee;
+    border: 1px solid #d9cda9;
+    border-radius: 12px;
+}
+
+.activation-card h3 {
+    margin: 0 0 7px;
+    font-size: 14px;
+    color: #173f34;
+}
+
+.activation-card p {
+    margin: 0 0 12px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #66736e;
+}
+
+.activation-input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 11px 12px;
+    border: 1px solid #d8d4c8;
+    border-radius: 8px;
+    outline: none;
+    background: #ffffff;
+    color: #263d35;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.activation-input:focus {
+    border-color: #0e5a44;
+    box-shadow: 0 0 0 2px rgba(14, 90, 68, 0.08);
+}
+
+.activation-input::placeholder {
+    color: #a1a7a4;
+}
+
+.activation-button {
+    width: 100%;
+    padding: 11px 15px;
+    border: 1px solid #0e5a44;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #0e5a44;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.activation-button:hover {
+    background: #0e5a44;
+    color: #ffffff;
+}
+
+.activation-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.activation-message {
+    margin: 10px 0 0 !important;
+    padding: 9px 10px;
+    border-radius: 7px;
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+}
+
+.activation-message.success {
+    background: #e5f2ec;
+    color: #0e5a44;
+}
+
+.activation-message.error {
+    background: #fde7e7;
+    color: #a42a2a;
+}
+
+
+/* --------------------------------
+   PRO ACTIVE STATE
+-------------------------------- */
+
+.pro-active-card {
+    margin-top: 18px;
+    padding: 16px;
+    text-align: center;
+    background: #ffffff;
+    border: 1px solid #d9cda9;
+    border-radius: 12px;
+}
+
+.pro-active-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 9px;
+    border-radius: 50%;
+    background: #e5f2ec;
+    color: #0e5a44;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.pro-active-card h3 {
+    margin: 0 0 5px;
+    font-size: 14px;
+    color: #173f34;
+}
+
+.pro-active-card p {
+    margin: 0;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #74807b;
+}
+
+
+/* --------------------------------
    LOADING VIEW
 -------------------------------- */
 
