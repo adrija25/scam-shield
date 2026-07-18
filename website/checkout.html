@@ -17,8 +17,16 @@
         content="Upgrade to Scam Shield Pro for unlimited website scans and advanced scam protection."
     >
 
-    <!-- Razorpay Checkout -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!--
+        Razorpay Checkout.
+        This script is only used when the Arthiva Labs
+        payment API identifies the customer as being
+        in the India payment market.
+    -->
+    <script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+    ></script>
+
 
     <style>
 
@@ -29,26 +37,37 @@
         body {
             margin: 0;
             min-height: 100vh;
+
             font-family:
                 Inter,
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
                 sans-serif;
+
             background: #f8f5ed;
             color: #173f34;
         }
 
+
+        /* --------------------------------
+           HEADER
+        -------------------------------- */
+
         .topbar {
             width: 100%;
             padding: 22px 30px;
-            border-bottom: 1px solid #e6dfcf;
+
+            border-bottom:
+                1px solid #e6dfcf;
+
             background: #ffffff;
         }
 
         .brand {
             max-width: 960px;
             margin: 0 auto;
+
             display: flex;
             align-items: center;
             gap: 14px;
@@ -57,38 +76,56 @@
         .brand-icon {
             width: 44px;
             height: 44px;
+
             border-radius: 14px;
+
             background: #f3efe4;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 22px;
         }
 
         .brand-title {
             margin: 0;
+
             font-size: 20px;
             font-weight: 700;
         }
 
         .brand-subtitle {
             margin-top: 2px;
+
             color: #9b762c;
+
             font-size: 12px;
             font-weight: 600;
         }
 
+
+        /* --------------------------------
+           MAIN
+        -------------------------------- */
+
         main {
             max-width: 960px;
             margin: 0 auto;
+
             padding: 70px 24px;
         }
 
         .checkout-card {
-            background: #ffffff;
-            border: 1px solid #e4dccb;
-            border-radius: 24px;
             overflow: hidden;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4dccb;
+
+            border-radius: 24px;
+
             box-shadow:
                 0 20px 60px
                 rgba(31, 55, 45, 0.08);
@@ -96,34 +133,53 @@
 
         .checkout-grid {
             display: grid;
+
             grid-template-columns:
                 minmax(0, 1.4fr)
                 minmax(280px, 0.8fr);
         }
+
+
+        /* --------------------------------
+           PRODUCT
+        -------------------------------- */
 
         .product-section {
             padding: 48px;
         }
 
         .eyebrow {
-            margin: 0 0 12px;
+            margin:
+                0 0 12px;
+
             color: #9b762c;
+
             font-size: 12px;
             font-weight: 700;
+
             letter-spacing: 1.5px;
-            text-transform: uppercase;
+
+            text-transform:
+                uppercase;
         }
 
         h1 {
-            margin: 0 0 18px;
+            margin:
+                0 0 18px;
+
             font-size: 42px;
             line-height: 1.08;
-            letter-spacing: -1.5px;
+
+            letter-spacing:
+                -1.5px;
         }
 
         .description {
-            margin: 0 0 30px;
+            margin:
+                0 0 30px;
+
             color: #607069;
+
             font-size: 17px;
             line-height: 1.7;
         }
@@ -131,131 +187,279 @@
         .features {
             padding: 0;
             margin: 0;
+
             list-style: none;
         }
 
         .features li {
-            padding: 12px 0;
+            padding:
+                12px 0;
+
             display: flex;
+
             gap: 12px;
-            align-items: flex-start;
+
+            align-items:
+                flex-start;
+
             color: #425b52;
+
             border-bottom:
                 1px solid #f0ece3;
         }
 
         .check {
             color: #a17b2e;
+
             font-weight: 700;
         }
 
+
+        /* --------------------------------
+           PAYMENT
+        -------------------------------- */
+
         .payment-section {
-            padding: 48px 36px;
-            background: #f5f0e4;
+            padding:
+                48px 36px;
+
+            background:
+                #f5f0e4;
+
             border-left:
                 1px solid #e4dccb;
         }
 
         .price-label {
             color: #9b762c;
+
             font-size: 12px;
             font-weight: 700;
+
             letter-spacing: 1px;
-            text-transform: uppercase;
+
+            text-transform:
+                uppercase;
         }
 
         .price {
-            margin: 10px 0 5px;
+            margin:
+                10px 0 5px;
+
             font-size: 46px;
             font-weight: 800;
-            letter-spacing: -2px;
+
+            letter-spacing:
+                -2px;
         }
 
         .price-note {
-            margin-bottom: 28px;
+            margin-bottom:
+                28px;
+
             color: #68776f;
+
             font-size: 14px;
         }
+
+
+        /* --------------------------------
+           BUTTONS
+        -------------------------------- */
 
         .pay-button {
             width: 100%;
+
             border: none;
-            border-radius: 12px;
-            padding: 16px 20px;
-            background: #17604d;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
+
+            border-radius:
+                12px;
+
+            padding:
+                16px 20px;
+
+            background:
+                #17604d;
+
+            color:
+                #ffffff;
+
+            font-size:
+                16px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
         }
 
         .pay-button:hover {
-            background: #124c3d;
+            background:
+                #124c3d;
         }
 
         .pay-button:disabled {
-            opacity: 0.6;
-            cursor: wait;
+            opacity:
+                0.6;
+
+            cursor:
+                wait;
         }
 
+        .activation-button {
+            display: none;
+
+            width: 100%;
+
+            margin-top:
+                12px;
+
+            border:
+                1px solid #17604d;
+
+            border-radius:
+                12px;
+
+            padding:
+                14px 18px;
+
+            background:
+                #ffffff;
+
+            color:
+                #17604d;
+
+            font-size:
+                14px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+        }
+
+        .activation-button.visible {
+            display:
+                block;
+        }
+
+
+        /* --------------------------------
+           STATUS MESSAGE
+        -------------------------------- */
+
         .payment-message {
-            min-height: 24px;
-            margin-top: 16px;
-            color: #596a62;
-            font-size: 13px;
-            line-height: 1.5;
+            min-height:
+                24px;
+
+            margin-top:
+                16px;
+
+            color:
+                #596a62;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.5;
         }
 
         .payment-message.success {
-            color: #17604d;
-            font-weight: 600;
+            color:
+                #17604d;
+
+            font-weight:
+                600;
         }
 
         .payment-message.error {
-            color: #a42a2a;
+            color:
+                #a42a2a;
         }
 
+        .payment-message.warning {
+            color:
+                #8a6400;
+        }
+
+
+        /* --------------------------------
+           NOTES
+        -------------------------------- */
+
         .secure-note {
-            margin-top: 24px;
-            color: #78847e;
-            font-size: 12px;
-            line-height: 1.6;
+            margin-top:
+                24px;
+
+            color:
+                #78847e;
+
+            font-size:
+                12px;
+
+            line-height:
+                1.6;
         }
 
         .back-link {
-            display: inline-block;
-            margin-top: 28px;
-            color: #17604d;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
+            display:
+                inline-block;
+
+            margin-top:
+                28px;
+
+            color:
+                #17604d;
+
+            font-size:
+                14px;
+
+            font-weight:
+                600;
+
+            text-decoration:
+                none;
         }
+
+
+        /* --------------------------------
+           RESPONSIVE
+        -------------------------------- */
 
         @media (
             max-width: 760px
         ) {
 
             main {
-                padding: 30px 16px;
+                padding:
+                    30px 16px;
             }
 
             .checkout-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
             }
 
             .product-section,
             .payment-section {
-                padding: 32px 24px;
+                padding:
+                    32px 24px;
             }
 
             .payment-section {
-                border-left: none;
+                border-left:
+                    none;
+
                 border-top:
                     1px solid #e4dccb;
             }
 
             h1 {
-                font-size: 34px;
+                font-size:
+                    34px;
             }
 
         }
@@ -263,7 +467,13 @@
     </style>
 </head>
 
+
 <body>
+
+
+    <!-- --------------------------------
+         HEADER
+    --------------------------------- -->
 
     <header class="topbar">
 
@@ -290,12 +500,18 @@
     </header>
 
 
+    <!-- --------------------------------
+         CHECKOUT
+    --------------------------------- -->
+
     <main>
 
         <div class="checkout-card">
 
             <div class="checkout-grid">
 
+
+                <!-- PRODUCT INFORMATION -->
 
                 <section class="product-section">
 
@@ -309,33 +525,60 @@
                     </h1>
 
                     <p class="description">
+
                         Upgrade Scam Shield to unlock
                         unlimited website scans and
                         advanced protection features.
-                        Pay once and keep your Pro access.
+
+                        Pay once and keep your
+                        Pro access.
+
                     </p>
 
 
                     <ul class="features">
 
                         <li>
-                            <span class="check">✓</span>
+
+                            <span class="check">
+                                ✓
+                            </span>
+
                             Unlimited website scans
+
                         </li>
 
+
                         <li>
-                            <span class="check">✓</span>
+
+                            <span class="check">
+                                ✓
+                            </span>
+
                             Advanced scam risk signals
+
                         </li>
 
+
                         <li>
-                            <span class="check">✓</span>
+
+                            <span class="check">
+                                ✓
+                            </span>
+
                             Deeper website trust analysis
+
                         </li>
 
+
                         <li>
-                            <span class="check">✓</span>
+
+                            <span class="check">
+                                ✓
+                            </span>
+
                             One-time payment
+
                         </li>
 
                     </ul>
@@ -351,11 +594,14 @@
                 </section>
 
 
+                <!-- PAYMENT -->
+
                 <section class="payment-section">
 
                     <div class="price-label">
                         Scam Shield Pro
                     </div>
+
 
                     <div
                         class="price"
@@ -363,6 +609,7 @@
                     >
                         ₹199
                     </div>
+
 
                     <div
                         class="price-note"
@@ -378,6 +625,26 @@
                         type="button"
                     >
                         Upgrade to Pro
+                    </button>
+
+
+                    <!--
+                        This button appears only
+                        after verified payment.
+
+                        In the next extension-side
+                        step, this activation URL
+                        will be handled by the
+                        installed Scam Shield
+                        extension.
+                    -->
+
+                    <button
+                        class="activation-button"
+                        id="activationButton"
+                        type="button"
+                    >
+                        Activate Scam Shield Pro
                     </button>
 
 
@@ -397,6 +664,12 @@
                         Customers in India use Razorpay.
                         International customers use PayPal.
 
+                        <br><br>
+
+                        Your Pro access is created only
+                        after the payment has been
+                        verified by Arthiva Labs.
+
                     </div>
 
                 </section>
@@ -411,14 +684,60 @@
 
     <script>
 
+
+        /*
+        ============================================================
+        CONFIGURATION
+        ============================================================
+        */
+
+
         const ARTHIVA_API_BASE =
             "https://arthiva-labs.pages.dev";
+
 
         const PRODUCT =
             "scam-shield";
 
+
         const OFFER =
             "pro";
+
+
+        /*
+            These storage keys are used only
+            by the Scam Shield checkout website.
+
+            The Chrome extension cannot directly
+            read this localStorage.
+
+            The activation handoff will be
+            connected on the extension side next.
+        */
+
+
+        const STORAGE_KEYS = {
+
+            proToken:
+                "scamShieldProAccessToken",
+
+            proActive:
+                "scamShieldPro",
+
+            pendingPayPalOrder:
+                "scamShieldPendingPayPalOrderId",
+
+            pendingProvider:
+                "scamShieldPendingPaymentProvider"
+
+        };
+
+
+        /*
+        ============================================================
+        ELEMENTS
+        ============================================================
+        */
 
 
         const payButton =
@@ -426,10 +745,36 @@
                 "payButton"
             );
 
+
+        const activationButton =
+            document.getElementById(
+                "activationButton"
+            );
+
+
         const paymentMessage =
             document.getElementById(
                 "paymentMessage"
             );
+
+
+        const priceDisplay =
+            document.getElementById(
+                "priceDisplay"
+            );
+
+
+        const priceNote =
+            document.getElementById(
+                "priceNote"
+            );
+
+
+        /*
+        ============================================================
+        UI HELPERS
+        ============================================================
+        */
 
 
         function showMessage(
@@ -440,15 +785,24 @@
             paymentMessage.textContent =
                 message;
 
-            paymentMessage.classList.remove(
-                "success",
-                "error"
-            );
+
+            paymentMessage
+                .classList
+                .remove(
+                    "success",
+                    "error",
+                    "warning"
+                );
+
 
             if (type) {
-                paymentMessage.classList.add(
-                    type
-                );
+
+                paymentMessage
+                    .classList
+                    .add(
+                        type
+                    );
+
             }
 
         }
@@ -459,10 +813,169 @@
             payButton.disabled =
                 false;
 
+
             payButton.textContent =
                 "Upgrade to Pro";
 
         }
+
+
+        function showActivatedState() {
+
+            payButton.disabled =
+                true;
+
+
+            payButton.textContent =
+                "Pro Purchased";
+
+
+            activationButton
+                .classList
+                .add(
+                    "visible"
+                );
+
+
+            showMessage(
+                "Payment verified. Your Scam Shield Pro access is ready to activate.",
+                "success"
+            );
+
+        }
+
+
+        /*
+        ============================================================
+        PRICE DISPLAY
+        ============================================================
+        */
+
+
+        function updatePriceDisplay(
+            paymentData
+        ) {
+
+            if (
+                !paymentData ||
+                !paymentData.currency
+            ) {
+
+                return;
+
+            }
+
+
+            const currency =
+                String(
+                    paymentData.currency
+                ).toUpperCase();
+
+
+            const amount =
+                Number(
+                    paymentData.amount
+                ) / 100;
+
+
+            if (
+                currency === "INR"
+            ) {
+
+                priceDisplay.textContent =
+                    "₹" +
+                    amount.toFixed(0);
+
+
+                priceNote.textContent =
+                    "One-time payment · Razorpay";
+
+
+                return;
+
+            }
+
+
+            if (
+                currency === "USD"
+            ) {
+
+                priceDisplay.textContent =
+                    "$" +
+                    amount.toFixed(2);
+
+
+                priceNote.textContent =
+                    "One-time payment · PayPal";
+
+
+                return;
+
+            }
+
+
+            priceDisplay.textContent =
+                currency +
+                " " +
+                amount.toFixed(2);
+
+        }
+
+
+        /*
+        ============================================================
+        SAVE VERIFIED PRO ACCESS
+        ============================================================
+        */
+
+
+        function saveProAccess(
+            proAccessToken
+        ) {
+
+            if (!proAccessToken) {
+
+                throw new Error(
+                    "Scam Shield Pro access token was not returned."
+                );
+
+            }
+
+
+            localStorage.setItem(
+                STORAGE_KEYS.proToken,
+                proAccessToken
+            );
+
+
+            localStorage.setItem(
+                STORAGE_KEYS.proActive,
+                "true"
+            );
+
+
+            localStorage.removeItem(
+                STORAGE_KEYS
+                    .pendingPayPalOrder
+            );
+
+
+            localStorage.removeItem(
+                STORAGE_KEYS
+                    .pendingProvider
+            );
+
+
+            showActivatedState();
+
+        }
+
+
+        /*
+        ============================================================
+        VERIFY RAZORPAY PAYMENT
+        ============================================================
+        */
 
 
         async function verifyRazorpayPayment(
@@ -470,7 +983,7 @@
         ) {
 
             showMessage(
-                "Payment received. Verifying your Scam Shield Pro access..."
+                "Payment received. Verifying your Scam Shield Pro purchase..."
             );
 
 
@@ -478,38 +991,52 @@
                 await fetch(
                     ARTHIVA_API_BASE +
                     "/api/verify-payment",
+
                     {
+
                         method:
                             "POST",
 
+
                         headers: {
+
                             "Content-Type":
                                 "application/json"
+
                         },
+
 
                         body:
                             JSON.stringify({
+
                                 product:
                                     PRODUCT,
+
 
                                 offer:
                                     OFFER,
 
+
                                 paymentProvider:
                                     "razorpay",
+
 
                                 razorpay_order_id:
                                     paymentResponse
                                         .razorpay_order_id,
 
+
                                 razorpay_payment_id:
                                     paymentResponse
                                         .razorpay_payment_id,
 
+
                                 razorpay_signature:
                                     paymentResponse
                                         .razorpay_signature
+
                             })
+
                     }
                 );
 
@@ -526,56 +1053,24 @@
 
                 throw new Error(
                     data.error ||
-                    "Payment verification failed."
+                    "Razorpay payment verification failed."
                 );
 
             }
 
 
-            if (!data.proAccessToken) {
-
-                throw new Error(
-                    "Payment was verified, but the Pro access token was not returned."
-                );
-
-            }
-
-
-            /*
-                Save the Pro token temporarily
-                in the checkout website.
-
-                In the next step, we will connect
-                this token back to the Chrome
-                extension itself.
-            */
-
-
-            localStorage.setItem(
-                "scamShieldProAccessToken",
+            saveProAccess(
                 data.proAccessToken
             );
 
-
-            localStorage.setItem(
-                "scamShieldPro",
-                "true"
-            );
-
-
-            showMessage(
-                "Payment verified. Scam Shield Pro has been activated. You can return to the extension.",
-                "success"
-            );
-
-
-            payButton.disabled =
-                true;
-
-            payButton.textContent =
-                "Pro Activated";
-
         }
+
+
+        /*
+        ============================================================
+        OPEN RAZORPAY CHECKOUT
+        ============================================================
+        */
 
 
         function openRazorpayCheckout(
@@ -584,7 +1079,7 @@
 
             if (
                 typeof Razorpay ===
-                "undefined"
+                    "undefined"
             ) {
 
                 throw new Error(
@@ -594,26 +1089,50 @@
             }
 
 
+            if (
+                !paymentData
+                    .razorpayKeyId ||
+
+                !paymentData
+                    .orderId
+            ) {
+
+                throw new Error(
+                    "Razorpay payment information is incomplete."
+                );
+
+            }
+
+
             const options = {
+
 
                 key:
                     paymentData
                         .razorpayKeyId,
 
+
                 amount:
-                    paymentData.amount,
+                    paymentData
+                        .amount,
+
 
                 currency:
-                    paymentData.currency,
+                    paymentData
+                        .currency,
+
 
                 name:
                     "Arthiva Labs",
 
+
                 description:
                     "Scam Shield Pro",
 
+
                 order_id:
-                    paymentData.orderId,
+                    paymentData
+                        .orderId,
 
 
                 handler:
@@ -632,14 +1151,14 @@
                         ) {
 
                             console.error(
-                                "Scam Shield verification error",
+                                "Scam Shield Razorpay verification error",
                                 error
                             );
 
 
                             showMessage(
                                 error.message ||
-                                "Payment verification failed. Please contact Arthiva Labs support.",
+                                "Your payment may have completed, but Pro activation could not be verified yet. Please try activation again or contact Arthiva Labs support.",
                                 "error"
                             );
 
@@ -657,8 +1176,10 @@
                         function () {
 
                             showMessage(
-                                "Payment was not completed."
+                                "Payment was not completed.",
+                                "warning"
                             );
+
 
                             resetPaymentButton();
 
@@ -668,8 +1189,10 @@
 
 
                 theme: {
+
                     color:
                         "#17604d"
+
                 }
 
             };
@@ -682,6 +1205,7 @@
 
 
             checkout.on(
+
                 "payment.failed",
 
                 function (
@@ -705,6 +1229,7 @@
                     resetPaymentButton();
 
                 }
+
             );
 
 
@@ -713,10 +1238,292 @@
         }
 
 
+        /*
+        ============================================================
+        VERIFY PAYPAL PAYMENT
+        ============================================================
+        */
+
+
+        async function verifyPayPalPayment(
+            orderId
+        ) {
+
+            if (!orderId) {
+
+                throw new Error(
+                    "PayPal order information is missing."
+                );
+
+            }
+
+
+            showMessage(
+                "PayPal approved your payment. Verifying and activating Scam Shield Pro..."
+            );
+
+
+            payButton.disabled =
+                true;
+
+
+            payButton.textContent =
+                "Verifying payment...";
+
+
+            const response =
+                await fetch(
+                    ARTHIVA_API_BASE +
+                    "/api/verify-payment",
+
+                    {
+
+                        method:
+                            "POST",
+
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+
+                        body:
+                            JSON.stringify({
+
+                                product:
+                                    PRODUCT,
+
+
+                                offer:
+                                    OFFER,
+
+
+                                paymentProvider:
+                                    "paypal",
+
+
+                                paypal_order_id:
+                                    orderId
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success ||
+                !data.verified
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "PayPal payment verification failed."
+                );
+
+            }
+
+
+            saveProAccess(
+                data.proAccessToken
+            );
+
+        }
+
+
+        /*
+        ============================================================
+        HANDLE PAYPAL RETURN
+        ============================================================
+        */
+
+
+        async function handlePayPalReturn() {
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+
+            const paypalCancelled =
+                params.get(
+                    "paypal"
+                ) ===
+                "cancelled";
+
+
+            if (paypalCancelled) {
+
+                localStorage.removeItem(
+                    STORAGE_KEYS
+                        .pendingPayPalOrder
+                );
+
+
+                localStorage.removeItem(
+                    STORAGE_KEYS
+                        .pendingProvider
+                );
+
+
+                showMessage(
+                    "PayPal payment was cancelled. You have not been charged by this checkout flow.",
+                    "warning"
+                );
+
+
+                resetPaymentButton();
+
+
+                return;
+
+            }
+
+
+            /*
+                PayPal commonly returns its order
+                identifier in the `token`
+                query parameter.
+
+                We also preserve our original
+                order ID in localStorage before
+                redirecting to PayPal.
+            */
+
+
+            const returnedOrderId =
+                params.get(
+                    "token"
+                );
+
+
+            const storedOrderId =
+                localStorage.getItem(
+                    STORAGE_KEYS
+                        .pendingPayPalOrder
+                );
+
+
+            const orderId =
+                returnedOrderId ||
+                storedOrderId;
+
+
+            if (!orderId) {
+
+                return;
+
+            }
+
+
+            /*
+                Only automatically verify when
+                this checkout previously started
+                a PayPal payment OR PayPal has
+                returned a token.
+            */
+
+
+            const pendingProvider =
+                localStorage.getItem(
+                    STORAGE_KEYS
+                        .pendingProvider
+                );
+
+
+            if (
+                !returnedOrderId &&
+                pendingProvider !==
+                    "paypal"
+            ) {
+
+                return;
+
+            }
+
+
+            try {
+
+                await verifyPayPalPayment(
+                    orderId
+                );
+
+
+                /*
+                    Remove PayPal query parameters
+                    after successful verification.
+
+                    This prevents accidental repeated
+                    verification if the customer
+                    refreshes the page.
+                */
+
+
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    window.location.pathname
+                );
+
+
+            } catch (
+                error
+            ) {
+
+                console.error(
+                    "Scam Shield PayPal verification error",
+                    error
+                );
+
+
+                /*
+                    We intentionally keep the stored
+                    PayPal order ID here.
+
+                    If payment succeeded but the
+                    verification request temporarily
+                    failed, the customer can refresh
+                    this page and verification can
+                    be attempted again without
+                    creating another payment.
+                */
+
+
+                showMessage(
+                    error.message ||
+                    "Your PayPal payment may have completed, but Pro activation could not be verified yet. Please refresh this page to retry verification.",
+                    "error"
+                );
+
+
+                resetPaymentButton();
+
+            }
+
+        }
+
+
+        /*
+        ============================================================
+        CREATE PAYMENT
+        ============================================================
+        */
+
+
         async function preparePayment() {
 
             payButton.disabled =
                 true;
+
 
             payButton.textContent =
                 "Preparing secure payment...";
@@ -729,27 +1536,38 @@
 
             try {
 
+
                 const response =
                     await fetch(
                         ARTHIVA_API_BASE +
                         "/api/create-payment",
+
                         {
+
                             method:
                                 "POST",
 
+
                             headers: {
+
                                 "Content-Type":
                                     "application/json"
+
                             },
+
 
                             body:
                                 JSON.stringify({
+
                                     product:
                                         PRODUCT,
 
+
                                     offer:
                                         OFFER
+
                                 })
+
                         }
                     );
 
@@ -771,38 +1589,66 @@
                 }
 
 
-                // ---------------------------------
-                // PAYPAL
-                // ---------------------------------
+                /*
+                    Update displayed price using
+                    the market and price selected
+                    by the Arthiva Labs server.
+                */
+
+
+                updatePriceDisplay(
+                    data
+                );
+
+
+                /*
+                ----------------------------------------------------
+                PAYPAL
+                ----------------------------------------------------
+                */
+
 
                 if (
                     data.paymentProvider ===
-                    "paypal"
+                        "paypal"
                 ) {
 
-                    if (!data.approveUrl) {
+
+                    if (
+                        !data.approveUrl ||
+                        !data.orderId
+                    ) {
 
                         throw new Error(
-                            "PayPal approval link was not received."
+                            "PayPal checkout information was not received."
                         );
 
                     }
 
 
                     /*
-                        Save PayPal order information
-                        before redirecting the customer.
+                        Store the PayPal order ID
+                        before leaving this page.
 
-                        After PayPal sends the customer
-                        back to Scam Shield, we will
-                        use this order ID to complete
-                        verification.
+                        This allows us to retry
+                        verification after the
+                        customer returns.
                     */
 
 
                     localStorage.setItem(
-                        "scamShieldPendingPayPalOrderId",
+                        STORAGE_KEYS
+                            .pendingPayPalOrder,
+
                         data.orderId
+                    );
+
+
+                    localStorage.setItem(
+                        STORAGE_KEYS
+                            .pendingProvider,
+
+                        "paypal"
                     );
 
 
@@ -820,14 +1666,18 @@
                 }
 
 
-                // ---------------------------------
-                // RAZORPAY
-                // ---------------------------------
+                /*
+                ----------------------------------------------------
+                RAZORPAY
+                ----------------------------------------------------
+                */
+
 
                 if (
                     data.paymentProvider ===
-                    "razorpay"
+                        "razorpay"
                 ) {
+
 
                     showMessage(
                         "Opening secure Razorpay checkout..."
@@ -853,6 +1703,7 @@
                 error
             ) {
 
+
                 console.error(
                     "Scam Shield payment error",
                     error
@@ -873,12 +1724,177 @@
         }
 
 
+        /*
+        ============================================================
+        ACTIVATION HANDOFF
+        ============================================================
+
+        This prepares the verified token for the
+        extension-side activation mechanism.
+
+        The website itself cannot directly write
+        to chrome.storage belonging to the
+        installed Chrome extension.
+
+        In the next step we will connect the
+        extension to receive this verified token.
+        ============================================================
+        */
+
+
+        function beginExtensionActivation() {
+
+            const proAccessToken =
+                localStorage.getItem(
+                    STORAGE_KEYS
+                        .proToken
+                );
+
+
+            if (!proAccessToken) {
+
+                showMessage(
+                    "Your Pro access token could not be found. Please complete or verify your payment first.",
+                    "error"
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+                For now, preserve the verified
+                token locally and show the user
+                that payment is complete.
+
+                The next development step will
+                replace this with the actual
+                extension activation handoff.
+            */
+
+
+            showMessage(
+                "Your purchase is verified. Open the Scam Shield extension to complete Pro activation.",
+                "success"
+            );
+
+        }
+
+
+        /*
+        ============================================================
+        EXISTING VERIFIED PURCHASE
+        ============================================================
+        */
+
+
+        function restoreExistingPurchase() {
+
+            const existingToken =
+                localStorage.getItem(
+                    STORAGE_KEYS
+                        .proToken
+                );
+
+
+            const existingProStatus =
+                localStorage.getItem(
+                    STORAGE_KEYS
+                        .proActive
+                );
+
+
+            if (
+                existingToken &&
+                existingProStatus ===
+                    "true"
+            ) {
+
+                showActivatedState();
+
+
+                return true;
+
+            }
+
+
+            return false;
+
+        }
+
+
+        /*
+        ============================================================
+        EVENTS
+        ============================================================
+        */
+
+
         payButton.addEventListener(
+
             "click",
+
             preparePayment
+
         );
 
+
+        activationButton.addEventListener(
+
+            "click",
+
+            beginExtensionActivation
+
+        );
+
+
+        /*
+        ============================================================
+        PAGE INITIALISATION
+        ============================================================
+        */
+
+
+        async function initialiseCheckout() {
+
+
+            /*
+                First restore any purchase that
+                this browser has already verified.
+            */
+
+
+            const existingPurchase =
+                restoreExistingPurchase();
+
+
+            if (existingPurchase) {
+
+                return;
+
+            }
+
+
+            /*
+                Then check whether the customer
+                has just returned from PayPal
+                or has a pending PayPal order
+                requiring verification.
+            */
+
+
+            await handlePayPalReturn();
+
+        }
+
+
+        initialiseCheckout();
+
+
     </script>
+
 
 </body>
 </html>
