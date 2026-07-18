@@ -1,10 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // -----------------------------------------
-    // FREE PLAN CONFIGURATION
+    // CONFIGURATION
     // -----------------------------------------
 
     const FREE_DAILY_SCAN_LIMIT = 5;
+
+    const ARTHIVA_API_BASE =
+        "https://arthiva-labs.pages.dev";
+
+    const CHECKOUT_URL =
+       "https://scam-shield-2sn.pages.dev/checkout.html";
+
+    const PRO_TOKEN_KEY =
+        "scamShieldProAccessToken";
+
+    const PRO_STATUS_KEY =
+        "scamShieldPro";
+
+    let isProUser = false;
 
 
     // -----------------------------------------
@@ -79,6 +93,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // -----------------------------------------
+    // PRO ELEMENTS
+    // -----------------------------------------
+
+    const planBadge =
+        document.getElementById("planBadge");
+
+    const currentPlanName =
+        document.getElementById(
+            "currentPlanName"
+        );
+
+    const scanAllowance =
+        document.getElementById(
+            "scanAllowance"
+        );
+
+    const upgradeCard =
+        document.getElementById(
+            "upgradeCard"
+        );
+
+    const proActiveCard =
+        document.getElementById(
+            "proActiveCard"
+        );
+
+    const activationCodeInput =
+        document.getElementById(
+            "activationCodeInput"
+        );
+
+    const activateProButton =
+        document.getElementById(
+            "activateProButton"
+        );
+
+    const activationMessage =
+        document.getElementById(
+            "activationMessage"
+        );
+
+
+    // -----------------------------------------
     // VIEW CONTROLLER
     // -----------------------------------------
 
@@ -99,11 +156,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (view === viewToShow) {
 
-                view.classList.remove("hidden");
+                view.classList.remove(
+                    "hidden"
+                );
 
             } else {
 
-                view.classList.add("hidden");
+                view.classList.add(
+                    "hidden"
+                );
 
             }
 
@@ -170,9 +231,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     ) || 0;
 
 
-                // New day = reset usage.
-
-                if (storedDate !== today) {
+                if (
+                    storedDate !==
+                    today
+                ) {
 
                     scansUsed = 0;
 
@@ -187,7 +249,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                callback(scansUsed);
+                callback(
+                    scansUsed
+                );
 
             }
         );
@@ -196,10 +260,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // -----------------------------------------
-    // UPDATE SCANS REMAINING
+    // UPDATE FREE SCANS REMAINING
     // -----------------------------------------
 
     function updateScansRemaining() {
+
+        if (isProUser) {
+
+            if (scansRemaining) {
+
+                scansRemaining.textContent =
+                    "∞";
+
+            }
+
+            return;
+
+        }
+
 
         getScanUsage((scansUsed) => {
 
@@ -223,10 +301,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // -----------------------------------------
-    // RECORD SUCCESSFUL SCAN
+    // RECORD SUCCESSFUL FREE SCAN
     // -----------------------------------------
 
-    function recordSuccessfulScan(callback) {
+    function recordSuccessfulScan(
+        callback
+    ) {
+
+        /*
+            Pro users have unlimited scans.
+
+            We do not increment the free-plan
+            daily scan counter for verified
+            Pro users.
+        */
+
+        if (isProUser) {
+
+            if (callback) {
+                callback();
+            }
+
+            return;
+
+        }
+
 
         getScanUsage((scansUsed) => {
 
@@ -253,6 +352,501 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         });
+
+    }
+
+
+    // -----------------------------------------
+    // UPDATE PLAN UI
+    // -----------------------------------------
+
+    function updatePlanUI() {
+
+        if (isProUser) {
+
+            if (planBadge) {
+
+                planBadge.textContent =
+                    "PRO";
+
+            }
+
+
+            if (currentPlanName) {
+
+                currentPlanName.textContent =
+                    "Scam Shield Pro";
+
+            }
+
+
+            if (scansRemaining) {
+
+                scansRemaining.textContent =
+                    "∞";
+
+            }
+
+
+            if (scanAllowance) {
+
+                const allowanceText =
+                    scanAllowance.querySelector(
+                        "span"
+                    );
+
+                if (allowanceText) {
+
+                    allowanceText.textContent =
+                        "unlimited scans";
+
+                }
+
+            }
+
+
+            if (upgradeCard) {
+
+                upgradeCard.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            if (proActiveCard) {
+
+                proActiveCard.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+
+            return;
+
+        }
+
+
+        // FREE PLAN UI
+
+        if (planBadge) {
+
+            planBadge.textContent =
+                "FREE";
+
+        }
+
+
+        if (currentPlanName) {
+
+            currentPlanName.textContent =
+                "Scam Shield Free";
+
+        }
+
+
+        if (scanAllowance) {
+
+            const allowanceText =
+                scanAllowance.querySelector(
+                    "span"
+                );
+
+            if (allowanceText) {
+
+                allowanceText.textContent =
+                    "scans left today";
+
+            }
+
+        }
+
+
+        if (upgradeCard) {
+
+            upgradeCard.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (proActiveCard) {
+
+            proActiveCard.classList.add(
+                "hidden"
+            );
+
+        }
+
+
+        updateScansRemaining();
+
+    }
+
+
+    // -----------------------------------------
+    // ACTIVATION MESSAGE
+    // -----------------------------------------
+
+    function showActivationMessage(
+        message,
+        isError = false
+    ) {
+
+        if (!activationMessage) {
+            return;
+        }
+
+
+        activationMessage.textContent =
+            message;
+
+
+        activationMessage.style.color =
+            isError
+                ? "#a42a2a"
+                : "#17604d";
+
+    }
+
+
+    // -----------------------------------------
+    // VALIDATE PRO TOKEN WITH ARTHIVA
+    // -----------------------------------------
+
+    async function validateProToken(
+        token
+    ) {
+
+        const response =
+            await fetch(
+                ARTHIVA_API_BASE +
+                "/api/activate-scam-shield",
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            token:
+                                token
+                        })
+                }
+            );
+
+
+        let data;
+
+
+        try {
+
+            data =
+                await response.json();
+
+        } catch (error) {
+
+            throw new Error(
+                "Arthiva Labs returned an invalid activation response."
+            );
+
+        }
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            !data.valid ||
+            !data.activated ||
+            !data.pro
+        ) {
+
+            throw new Error(
+                data.error ||
+                "This activation code is not valid."
+            );
+
+        }
+
+
+        if (
+            data.product !==
+                "scam-shield" ||
+
+            data.offer !==
+                "pro"
+        ) {
+
+            throw new Error(
+                "This activation code does not belong to Scam Shield Pro."
+            );
+
+        }
+
+
+        return data;
+
+    }
+
+
+    // -----------------------------------------
+    // ACTIVATE PRO
+    // -----------------------------------------
+
+    async function activatePro() {
+
+        if (!activationCodeInput) {
+            return;
+        }
+
+
+        const token =
+            activationCodeInput
+                .value
+                .trim();
+
+
+        if (!token) {
+
+            showActivationMessage(
+                "Paste your activation code first.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !/^[a-fA-F0-9]{64}$/.test(
+                token
+            )
+        ) {
+
+            showActivationMessage(
+                "This activation code is not in the expected format.",
+                true
+            );
+
+            return;
+
+        }
+
+
+        if (activateProButton) {
+
+            activateProButton.disabled =
+                true;
+
+            activateProButton.textContent =
+                "Activating...";
+
+        }
+
+
+        showActivationMessage(
+            "Checking your purchase..."
+        );
+
+
+        try {
+
+            await validateProToken(
+                token
+            );
+
+
+            chrome.storage.local.set(
+                {
+                    [PRO_TOKEN_KEY]:
+                        token,
+
+                    [PRO_STATUS_KEY]:
+                        true
+                },
+                () => {
+
+                    if (
+                        chrome.runtime
+                            .lastError
+                    ) {
+
+                        showActivationMessage(
+                            "Pro was verified, but Scam Shield could not save the activation on this browser.",
+                            true
+                        );
+
+                        if (
+                            activateProButton
+                        ) {
+
+                            activateProButton.disabled =
+                                false;
+
+                            activateProButton.textContent =
+                                "Activate Pro";
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    isProUser =
+                        true;
+
+
+                    updatePlanUI();
+
+
+                    showActivationMessage(
+                        "Scam Shield Pro is active."
+                    );
+
+
+                    if (
+                        activationCodeInput
+                    ) {
+
+                        activationCodeInput.value =
+                            "";
+
+                    }
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Scam Shield activation error",
+                error
+            );
+
+
+            showActivationMessage(
+                error.message ||
+                "Unable to activate Scam Shield Pro.",
+                true
+            );
+
+
+            if (activateProButton) {
+
+                activateProButton.disabled =
+                    false;
+
+                activateProButton.textContent =
+                    "Activate Pro";
+
+            }
+
+        }
+
+    }
+
+
+    // -----------------------------------------
+    // RESTORE AND REVALIDATE PRO ACCESS
+    // -----------------------------------------
+
+    function restoreProAccess() {
+
+        chrome.storage.local.get(
+            [
+                PRO_TOKEN_KEY,
+                PRO_STATUS_KEY
+            ],
+            async (data) => {
+
+                const storedToken =
+                    data[
+                        PRO_TOKEN_KEY
+                    ];
+
+
+                if (
+                    !storedToken ||
+                    data[
+                        PRO_STATUS_KEY
+                    ] !== true
+                ) {
+
+                    isProUser =
+                        false;
+
+                    updatePlanUI();
+
+                    return;
+
+                }
+
+
+                /*
+                    Validate the stored entitlement
+                    with Arthiva again.
+
+                    If the user is temporarily
+                    offline, we keep the existing
+                    local Pro state for usability.
+
+                    A definite invalid response
+                    removes local Pro access.
+                */
+
+
+                try {
+
+                    await validateProToken(
+                        storedToken
+                    );
+
+
+                    isProUser =
+                        true;
+
+
+                    updatePlanUI();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Stored Scam Shield Pro validation failed",
+                        error
+                    );
+
+
+                    /*
+                        We do not automatically delete
+                        the token here because a network
+                        outage should not permanently
+                        remove a legitimate purchase.
+
+                        The token will be validated again
+                        the next time the popup opens.
+                    */
+
+
+                    isProUser =
+                        true;
+
+
+                    updatePlanUI();
+
+                }
+
+            }
+        );
 
     }
 
@@ -290,10 +884,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // -------------------------------------
-        // STATUS
-        // -------------------------------------
-
         if (statusBadge) {
 
             const status =
@@ -314,8 +904,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (
                 statusClass === "safe" ||
-                statusClass === "suspicious" ||
-                statusClass === "dangerous"
+                statusClass ===
+                    "suspicious" ||
+                statusClass ===
+                    "dangerous"
             ) {
 
                 statusBadge.classList.add(
@@ -327,10 +919,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // -------------------------------------
-        // DOMAIN
-        // -------------------------------------
-
         if (domainName) {
 
             domainName.textContent =
@@ -339,10 +927,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
-        // -------------------------------------
-        // SCAN DETAILS
-        // -------------------------------------
 
         if (httpsStatus) {
 
@@ -353,12 +937,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
         if (formsCount) {
 
             formsCount.textContent =
                 response.forms ?? 0;
 
         }
+
 
         if (externalLinksCount) {
 
@@ -367,12 +953,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+
         if (passwordFieldsCount) {
 
             passwordFieldsCount.textContent =
                 response.passwordFields ?? 0;
 
         }
+
 
         if (paymentFieldsCount) {
 
@@ -382,20 +970,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        // -------------------------------------
-        // RISK REASONS
-        // -------------------------------------
-
         if (reasonsList) {
 
             reasonsList.innerHTML =
                 "";
 
+
             if (
                 Array.isArray(
                     response.reasons
                 ) &&
-                response.reasons.length > 0
+                response.reasons.length >
+                    0
             ) {
 
                 response.reasons.forEach(
@@ -441,7 +1027,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        showView(resultsView);
+        showView(
+            resultsView
+        );
 
     }
 
@@ -452,16 +1040,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function performScan() {
 
-        showView(loadingView);
+        showView(
+            loadingView
+        );
+
 
         chrome.runtime.sendMessage(
             {
-                action: "scan"
+                action:
+                    "scan"
             },
             (response) => {
 
                 if (
-                    chrome.runtime.lastError
+                    chrome.runtime
+                        .lastError
                 ) {
 
                     showError(
@@ -472,12 +1065,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
+
                 }
 
 
                 if (
                     !response ||
-                    response.success === false
+                    response.success ===
+                        false
                 ) {
 
                     showError(
@@ -486,11 +1081,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
+
                 }
 
-
-                // Count only scans that actually
-                // completed successfully.
 
                 recordSuccessfulScan(
                     () => {
@@ -509,10 +1102,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // -----------------------------------------
-    // CHECK FREE LIMIT BEFORE SCANNING
+    // CHECK PLAN BEFORE SCANNING
     // -----------------------------------------
 
     function runScan() {
+
+        /*
+            Verified Pro users bypass
+            the free daily scan limit.
+        */
+
+        if (isProUser) {
+
+            performScan();
+
+            return;
+
+        }
+
 
         getScanUsage((scansUsed) => {
 
@@ -522,11 +1129,13 @@ document.addEventListener("DOMContentLoaded", () => {
             ) {
 
                 showError(
-                    "You have used your 5 free scans for today. Scam Shield Pro will provide unlimited scans."
+                    "You have used your 5 free scans for today. Upgrade to Scam Shield Pro for unlimited scans."
                 );
 
                 return;
+
             }
+
 
             performScan();
 
@@ -536,7 +1145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // -----------------------------------------
-    // BUTTON EVENTS
+    // SCAN BUTTON EVENTS
     // -----------------------------------------
 
     if (scanButton) {
@@ -565,7 +1174,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                showView(scanView);
+                showView(
+                    scanView
+                );
 
                 updateScansRemaining();
 
@@ -585,9 +1196,45 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                alert(
-                    "Scam Shield Pro payments are being connected to the secure Arthiva Labs payment system. No payment has been initiated."
-                );
+                chrome.tabs.create({
+                    url:
+                        CHECKOUT_URL
+                });
+
+            }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // ACTIVATE PRO BUTTON
+    // -----------------------------------------
+
+    if (activateProButton) {
+
+        activateProButton.addEventListener(
+            "click",
+            activatePro
+        );
+
+    }
+
+
+    if (activationCodeInput) {
+
+        activationCodeInput.addEventListener(
+            "keydown",
+            (event) => {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    activatePro();
+
+                }
 
             }
         );
@@ -659,7 +1306,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // INITIALISE POPUP
     // -----------------------------------------
 
-    showView(scanView);
+    showView(
+        scanView
+    );
+
+
+    restoreProAccess();
+
 
     updateScansRemaining();
 
