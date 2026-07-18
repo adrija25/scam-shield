@@ -22,12 +22,17 @@ body {
     display: none !important;
 }
 
+
 /* --------------------------------
    HEADER
 -------------------------------- */
 
 .header {
-    padding: 22px 22px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 22px;
     background: #ffffff;
     border-bottom: 1px solid #e7e2d5;
 }
@@ -44,6 +49,7 @@ body {
     justify-content: center;
     width: 42px;
     height: 42px;
+    flex-shrink: 0;
     border-radius: 12px;
     background: #f1eee4;
     font-size: 23px;
@@ -51,7 +57,7 @@ body {
 
 .brand h1 {
     margin: 0;
-    font-size: 22px;
+    font-size: 21px;
     line-height: 1.2;
     font-weight: 700;
     color: #0e5a44;
@@ -59,43 +65,114 @@ body {
 
 .brand-name {
     margin: 3px 0 0;
-    font-size: 12px;
+    font-size: 11px;
     color: #8a7444;
     font-weight: 600;
 }
 
-.tagline {
-    margin: 14px 0 0;
-    font-size: 13px;
-    color: #5f6d67;
+.plan-badge {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border: 1px solid #d9cda9;
+    border-radius: 999px;
+    background: #faf7ee;
+    color: #8a7444;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
 }
+
 
 /* --------------------------------
    INITIAL SCAN VIEW
 -------------------------------- */
 
 .scan-view {
-    padding: 32px 22px;
+    padding: 24px 22px 28px;
 }
 
 .intro {
     text-align: center;
-    padding: 15px 5px 25px;
+    padding: 8px 5px 20px;
+}
+
+.tagline {
+    margin: 0 0 8px;
+    font-size: 12px;
+    color: #8a7444;
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
 .intro h2 {
-    margin: 0 0 10px;
+    margin: 0 0 9px;
     font-size: 20px;
     line-height: 1.35;
     color: #173f34;
 }
 
-.intro p {
+.intro .intro-text {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.6;
     color: #66736e;
 }
+
+
+/* --------------------------------
+   PLAN STATUS
+-------------------------------- */
+
+.plan-status-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+    padding: 14px 15px;
+    background: #ffffff;
+    border: 1px solid #e7e2d5;
+    border-radius: 12px;
+}
+
+.plan-status-label {
+    margin: 0 0 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #8a928e;
+    font-weight: 700;
+}
+
+.plan-status-name {
+    margin: 0;
+    font-size: 13px;
+    color: #173f34;
+    font-weight: 700;
+}
+
+.scan-allowance {
+    text-align: right;
+}
+
+.scan-allowance strong {
+    display: block;
+    font-size: 18px;
+    line-height: 1.1;
+    color: #0e5a44;
+}
+
+.scan-allowance span {
+    display: block;
+    margin-top: 3px;
+    font-size: 9px;
+    color: #8a928e;
+}
+
+
+/* --------------------------------
+   PRIMARY BUTTON
+-------------------------------- */
 
 .primary-button {
     width: 100%;
@@ -126,12 +203,123 @@ body {
 }
 
 .privacy-note {
-    margin: 14px 8px 0;
+    margin: 12px 8px 0;
     text-align: center;
-    font-size: 11px;
+    font-size: 10px;
     line-height: 1.5;
     color: #8a928e;
 }
+
+
+/* --------------------------------
+   PRO UPGRADE CARD
+-------------------------------- */
+
+.upgrade-card {
+    margin-top: 22px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #d9cda9;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px rgba(23, 63, 52, 0.05);
+}
+
+.upgrade-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.pro-label {
+    margin: 0 0 6px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 800;
+    color: #9b7d38;
+}
+
+.upgrade-header h3 {
+    max-width: 190px;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #173f34;
+}
+
+.pro-price {
+    flex-shrink: 0;
+    text-align: right;
+}
+
+.pro-price strong {
+    display: block;
+    font-size: 22px;
+    line-height: 1.1;
+    color: #0e5a44;
+}
+
+.pro-price span {
+    display: block;
+    margin-top: 3px;
+    font-size: 9px;
+    color: #8a928e;
+}
+
+.pro-features {
+    margin: 16px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pro-features li {
+    position: relative;
+    margin: 8px 0;
+    padding-left: 19px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #53635d;
+}
+
+.pro-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #9b7d38;
+    font-weight: 800;
+}
+
+.upgrade-button {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 9px;
+    background: #b39756;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+.upgrade-button:hover {
+    background: #9d8248;
+}
+
+.upgrade-button:active {
+    transform: scale(0.99);
+}
+
+.upgrade-note {
+    margin: 9px 0 0;
+    text-align: center;
+    font-size: 9px;
+    color: #929995;
+}
+
 
 /* --------------------------------
    LOADING VIEW
@@ -170,6 +358,7 @@ body {
     line-height: 1.5;
     color: #74807b;
 }
+
 
 /* --------------------------------
    RESULTS VIEW
@@ -238,6 +427,7 @@ body {
     color: #a42a2a;
 }
 
+
 /* --------------------------------
    DOMAIN
 -------------------------------- */
@@ -266,6 +456,7 @@ body {
     color: #263d35;
     overflow-wrap: anywhere;
 }
+
 
 /* --------------------------------
    REASONS
@@ -311,6 +502,7 @@ body {
     color: #8d3030;
 }
 
+
 /* --------------------------------
    SCAN DETAILS
 -------------------------------- */
@@ -335,6 +527,7 @@ body {
     font-size: 12px;
 }
 
+
 /* --------------------------------
    SECONDARY BUTTON
 -------------------------------- */
@@ -355,6 +548,7 @@ body {
 .secondary-button:hover {
     background: #f0f5f2;
 }
+
 
 /* --------------------------------
    ERROR VIEW
@@ -392,22 +586,53 @@ body {
     color: #6c7773;
 }
 
+
 /* --------------------------------
-   FOOTER
+   FOOTER NAVIGATION
 -------------------------------- */
 
 .footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    padding: 14px 20px;
+    gap: 8px;
+    padding: 13px 18px;
     border-top: 1px solid #e7e2d5;
     background: #ffffff;
-    color: #8b938f;
+}
+
+.footer-link {
+    padding: 2px;
+    border: none;
+    background: transparent;
+    color: #64726c;
+    font-family: inherit;
     font-size: 10px;
+    cursor: pointer;
+}
+
+.footer-link:hover {
+    color: #0e5a44;
+    text-decoration: underline;
 }
 
 .footer-divider {
     color: #b49b61;
+    font-size: 9px;
+}
+
+
+/* --------------------------------
+   PRODUCT FOOTER
+-------------------------------- */
+
+.product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 20px 12px;
+    background: #ffffff;
+    color: #9a9f9c;
+    font-size: 9px;
 }
