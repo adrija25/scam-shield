@@ -16,7 +16,7 @@ chrome.runtime.onInstalled.addListener(() => {
 // CONFIGURATION
 // =========================================
 
-const SCAN_TIMEOUT_MS = 10000;
+const SCAN_TIMEOUT_MS = 30000;
 
 
 // =========================================
