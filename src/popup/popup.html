@@ -84,7 +84,7 @@
             </div>
 
 
-            <!-- FREE PLAN STATUS -->
+            <!-- FREE / PRO PLAN STATUS -->
 
             <div class="plan-status-card">
 
@@ -103,7 +103,10 @@
 
                 </div>
 
-                <div class="scan-allowance">
+                <div
+                    id="scanAllowance"
+                    class="scan-allowance"
+                >
 
                     <strong id="scansRemaining">
                         --
@@ -134,7 +137,9 @@
             </p>
 
 
-            <!-- PRO UPGRADE CARD -->
+            <!-- =========================================
+                 PRO UPGRADE CARD
+            ========================================== -->
 
             <div
                 id="upgradeCard"
@@ -200,6 +205,8 @@
                 </ul>
 
 
+                <!-- NEW PURCHASE -->
+
                 <button
                     id="upgradeButton"
                     class="upgrade-button"
@@ -210,6 +217,78 @@
 
                 <p class="upgrade-note">
                     One-time purchase. No subscription.
+                </p>
+
+
+                <!-- =====================================
+                     EXISTING PURCHASE ACTIVATION
+                ====================================== -->
+
+                <div
+                    id="activationSection"
+                    class="activation-section"
+                >
+
+                    <p class="activation-title">
+                        Already purchased?
+                    </p>
+
+                    <p class="activation-description">
+                        Paste the activation code you received
+                        after your verified purchase.
+                    </p>
+
+
+                    <input
+                        id="activationCodeInput"
+                        class="activation-input"
+                        type="text"
+                        placeholder="Paste activation code"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+
+                    <button
+                        id="activateProButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        Activate Pro
+                    </button>
+
+
+                    <p
+                        id="activationMessage"
+                        class="activation-message"
+                        aria-live="polite"
+                    ></p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+                 PRO ACTIVE CARD
+            ========================================== -->
+
+            <div
+                id="proActiveCard"
+                class="upgrade-card hidden"
+            >
+
+                <p class="pro-label">
+                    SCAM SHIELD PRO
+                </p>
+
+                <h3>
+                    Pro protection is active.
+                </h3>
+
+                <p class="upgrade-note">
+                    You have unlimited website scans
+                    and access to Pro features.
                 </p>
 
             </div>
