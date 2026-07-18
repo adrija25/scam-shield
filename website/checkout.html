@@ -1742,26 +1742,59 @@
         */
 
 
-        function beginExtensionActivation() {
+        async function beginExtensionActivation() {
 
-            const proAccessToken =
-                localStorage.getItem(
-                    STORAGE_KEYS
-                        .proToken
-                );
-
-
-            if (!proAccessToken) {
-
-                showMessage(
-                    "Your Pro access token could not be found. Please complete or verify your payment first.",
-                    "error"
-                );
+    const proAccessToken =
+        localStorage.getItem(
+            STORAGE_KEYS.proToken
+        );
 
 
-                return;
+    if (!proAccessToken) {
 
-            }
+        showMessage(
+            "Your Pro access token could not be found. Please complete or verify your payment first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            proAccessToken
+        );
+
+
+        activationButton.textContent =
+            "Activation Code Copied ✓";
+
+
+        showMessage(
+            "Your activation code has been copied. Open the Scam Shield extension, choose Activate Pro, and paste your code.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Unable to copy Scam Shield activation code",
+            error
+        );
+
+
+        showMessage(
+            "Your purchase is verified, but the activation code could not be copied automatically. Please try again.",
+            "error"
+        );
+
+    }
+
+}
 
 
             /*
