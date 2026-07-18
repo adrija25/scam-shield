@@ -2,6 +2,9 @@
  * Scam Shield
  * Background Service Worker
  * Arthiva Labs
+ *
+ * Rule-based website risk analysis.
+ * AI is not used to determine the Trust Score.
  */
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -23,6 +26,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             try {
 
+                // -----------------------------------------
+                // CHECK ACTIVE TAB
+                // -----------------------------------------
+
                 if (!tabs || tabs.length === 0 || !tabs[0].id) {
 
                     sendResponse({
@@ -35,6 +42,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                 const tabId = tabs[0].id;
 
+
+                // -----------------------------------------
+                // SCAN CURRENT WEBPAGE
+                // -----------------------------------------
+
                 const results = await chrome.scripting.executeScript({
 
                     target: {
@@ -46,9 +58,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         const currentHostname =
                             window.location.hostname;
 
-                        // -----------------------------------------
-                        // EXTERNAL LINK DETECTION
-                        // -----------------------------------------
+
+                        // ---------------------------------
+                        // EXTERNAL LINKS
+                        // ---------------------------------
 
                         const externalLinks =
                             Array.from(document.links)
@@ -56,8 +69,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                                     try {
 
+                                        const linkUrl =
+                                            new URL(
+                                                link.href,
+                                                window.location.href
+                                            );
+
                                         return (
-                                            new URL(link.href).hostname !==
+                                            linkUrl.hostname &&
+                                            linkUrl.hostname !==
                                             currentHostname
                                         );
 
@@ -71,9 +91,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                                 .length;
 
 
-                        // -----------------------------------------
-                        // PASSWORD FIELD DETECTION
-                        // -----------------------------------------
+                        // ---------------------------------
+                        // PASSWORD FIELDS
+                        // ---------------------------------
 
                         const passwordFields =
                             document.querySelectorAll(
@@ -81,12 +101,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                             ).length;
 
 
-                        // -----------------------------------------
-                        // PAYMENT FIELD DETECTION
-                        // -----------------------------------------
+                        // ---------------------------------
+                        // PAYMENT-RELATED FIELDS
+                        // ---------------------------------
 
                         const paymentKeywords = [
                             "card",
+                            "cardnumber",
                             "credit",
                             "debit",
                             "cvv",
@@ -127,9 +148,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                             }).length;
 
 
-                        // -----------------------------------------
+                        // ---------------------------------
+                        // VISIBLE PAGE TEXT
+                        // ---------------------------------
+
+                        // Limit the amount of text processed.
+                        // This is used only for local,
+                        // rule-based phrase matching.
+
+                        const pageText =
+                            (
+                                document.body?.innerText ||
+                                ""
+                            )
+                                .toLowerCase()
+                                .slice(0, 100000);
+
+
+                        // ---------------------------------
                         // RETURN PAGE DATA
-                        // -----------------------------------------
+                        // ---------------------------------
 
                         return {
 
@@ -164,7 +202,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                                 passwordFields,
 
                             paymentFields:
-                                paymentFields
+                                paymentFields,
+
+                            pageText:
+                                pageText
 
                         };
 
@@ -172,6 +213,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                 });
 
+
+                // -----------------------------------------
+                // VALIDATE SCAN RESULT
+                // -----------------------------------------
 
                 if (!results || results.length === 0) {
 
@@ -184,10 +229,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     return;
                 }
 
-
                 const pageData =
                     results[0].result;
-
 
                 if (!pageData) {
 
@@ -202,7 +245,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
                 // -----------------------------------------
-                // INITIAL RULE-BASED RISK SCORING
+                // RISK SCORING
                 // -----------------------------------------
 
                 let score = 100;
@@ -210,7 +253,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const reasons = [];
 
 
-                // No HTTPS
+                // -----------------------------------------
+                // RULE 1
+                // NO HTTPS
+                // -----------------------------------------
 
                 if (!pageData.https) {
 
@@ -223,7 +269,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
 
-                // Long domain name
+                // -----------------------------------------
+                // RULE 2
+                // LONG DOMAIN
+                // -----------------------------------------
 
                 if (
                     pageData.hostname &&
@@ -239,7 +288,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
 
-                // Suspicious domain structure
+                // -----------------------------------------
+                // RULE 3
+                // UNUSUAL DOMAIN STRUCTURE
+                // -----------------------------------------
 
                 if (
                     pageData.hostname &&
@@ -261,7 +313,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
 
-                // IP address instead of domain
+                // -----------------------------------------
+                // RULE 4
+                // RAW IP ADDRESS
+                // -----------------------------------------
 
                 const ipAddressPattern =
                     /^(?:\d{1,3}\.){3}\d{1,3}$/;
@@ -282,7 +337,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
 
-                // Large number of external links
+                // -----------------------------------------
+                // RULE 5
+                // EXCESSIVE EXTERNAL LINKS
+                // -----------------------------------------
 
                 if (
                     pageData.links > 0 &&
@@ -302,7 +360,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
 
 
-                // Form on insecure page
+                // -----------------------------------------
+                // RULE 6
+                // FORM ON INSECURE PAGE
+                // -----------------------------------------
 
                 if (
                     pageData.forms > 0 &&
@@ -319,7 +380,252 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
                 // -----------------------------------------
-                // FINAL SCORE
+                // SCAM-LANGUAGE RULES
+                // -----------------------------------------
+
+                const urgencyPhrases = [
+
+                    "act now",
+                    "immediate action required",
+                    "urgent action required",
+                    "verify immediately",
+                    "respond immediately",
+                    "account will be suspended",
+                    "account has been suspended",
+                    "account suspended",
+                    "account will be closed",
+                    "your account is locked",
+                    "unusual activity detected"
+
+                ];
+
+                const prizePhrases = [
+
+                    "you have won",
+                    "you've won",
+                    "congratulations you won",
+                    "claim your prize",
+                    "claim your reward",
+                    "claim your winnings",
+                    "you are a winner",
+                    "selected as a winner",
+                    "free gift waiting"
+
+                ];
+
+                const suspiciousPaymentPhrases = [
+
+                    "pay immediately",
+                    "payment required immediately",
+                    "send payment now",
+                    "wire transfer",
+                    "pay with gift card",
+                    "payment by gift card",
+                    "buy gift cards",
+                    "send cryptocurrency",
+                    "send bitcoin",
+                    "pay in bitcoin"
+
+                ];
+
+                const jobScamPhrases = [
+
+                    "easy money",
+                    "guaranteed income",
+                    "earn money instantly",
+                    "earn from home instantly",
+                    "guaranteed job",
+                    "pay registration fee",
+                    "pay training fee",
+                    "pay application fee"
+
+                ];
+
+
+                const findMatches = (phrases) => {
+
+                    return phrases.filter(
+                        (phrase) =>
+                            pageData.pageText.includes(
+                                phrase
+                            )
+                    );
+
+                };
+
+
+                const urgencyMatches =
+                    findMatches(
+                        urgencyPhrases
+                    );
+
+                const prizeMatches =
+                    findMatches(
+                        prizePhrases
+                    );
+
+                const suspiciousPaymentMatches =
+                    findMatches(
+                        suspiciousPaymentPhrases
+                    );
+
+                const jobScamMatches =
+                    findMatches(
+                        jobScamPhrases
+                    );
+
+
+                // -----------------------------------------
+                // RULE 7
+                // MULTIPLE URGENCY SIGNALS
+                // -----------------------------------------
+
+                if (
+                    urgencyMatches.length >= 2
+                ) {
+
+                    score -= 10;
+
+                    reasons.push(
+                        "Multiple urgency or account-pressure phrases detected"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 8
+                // PRIZE / REWARD SCAM LANGUAGE
+                // -----------------------------------------
+
+                if (
+                    prizeMatches.length >= 1
+                ) {
+
+                    score -= 15;
+
+                    reasons.push(
+                        "Prize or reward language commonly associated with scams detected"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 9
+                // SUSPICIOUS PAYMENT LANGUAGE
+                // -----------------------------------------
+
+                if (
+                    suspiciousPaymentMatches.length >= 1
+                ) {
+
+                    score -= 20;
+
+                    reasons.push(
+                        "Suspicious payment language detected"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 10
+                // JOB SCAM LANGUAGE
+                // -----------------------------------------
+
+                if (
+                    jobScamMatches.length >= 1
+                ) {
+
+                    score -= 15;
+
+                    reasons.push(
+                        "Potential job or recruitment scam language detected"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 11
+                // PASSWORD FIELD ON INSECURE PAGE
+                // -----------------------------------------
+
+                if (
+                    pageData.passwordFields > 0 &&
+                    !pageData.https
+                ) {
+
+                    score -= 25;
+
+                    reasons.push(
+                        "Password field detected on an insecure page"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 12
+                // PAYMENT FIELD ON INSECURE PAGE
+                // -----------------------------------------
+
+                if (
+                    pageData.paymentFields > 0 &&
+                    !pageData.https
+                ) {
+
+                    score -= 30;
+
+                    reasons.push(
+                        "Payment-related fields detected on an insecure page"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 13
+                // PAYMENT FIELDS + SUSPICIOUS
+                // PAYMENT PRESSURE
+                // -----------------------------------------
+
+                if (
+                    pageData.paymentFields > 0 &&
+                    suspiciousPaymentMatches.length > 0
+                ) {
+
+                    score -= 20;
+
+                    reasons.push(
+                        "Payment fields appear alongside suspicious payment instructions"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // RULE 14
+                // PASSWORD FIELD + ACCOUNT PRESSURE
+                // -----------------------------------------
+
+                if (
+                    pageData.passwordFields > 0 &&
+                    urgencyMatches.length >= 2
+                ) {
+
+                    score -= 15;
+
+                    reasons.push(
+                        "Login credentials are requested alongside account-pressure language"
+                    );
+
+                }
+
+
+                // -----------------------------------------
+                // KEEP SCORE BETWEEN 0 AND 100
                 // -----------------------------------------
 
                 score =
@@ -332,8 +638,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     );
 
 
-                let status;
+                // -----------------------------------------
+                // DETERMINE STATUS
+                // -----------------------------------------
 
+                let status;
 
                 if (score >= 80) {
 
@@ -351,12 +660,42 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
                 // -----------------------------------------
-                // SEND RESULTS TO POPUP
+                // RETURN RESULTS TO POPUP
                 // -----------------------------------------
 
                 sendResponse({
 
-                    ...pageData,
+                    success: true,
+
+                    url:
+                        pageData.url,
+
+                    hostname:
+                        pageData.hostname,
+
+                    title:
+                        pageData.title,
+
+                    https:
+                        pageData.https,
+
+                    forms:
+                        pageData.forms,
+
+                    images:
+                        pageData.images,
+
+                    links:
+                        pageData.links,
+
+                    externalLinks:
+                        pageData.externalLinks,
+
+                    passwordFields:
+                        pageData.passwordFields,
+
+                    paymentFields:
+                        pageData.paymentFields,
 
                     score:
                         score,
@@ -377,7 +716,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     error
                 );
 
-
                 sendResponse({
 
                     success: false,
@@ -392,7 +730,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
 
     );
-
 
     return true;
 
