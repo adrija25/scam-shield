@@ -1,27 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Scam Shield</title>
 
-    <link rel="stylesheet" href="popup.css">
+    <link
+        rel="stylesheet"
+        href="popup.css"
+    >
 </head>
 
 <body>
 
-    <h1>🛡️ Scam Shield</h1>
+    <main class="app">
 
-    <p>Know before you trust.</p>
+        <!-- HEADER -->
 
-    <button id="scanButton">
-        Scan Website
-    </button>
+        <header class="header">
+
+            <div class="brand">
+
+                <div class="shield-icon">
+                    🛡️
+                </div>
+
+                <div>
+                    <h1>Scam Shield</h1>
+                    <p class="brand-name">
+                        by Arthiva Labs
+                    </p>
+                </div>
+
+            </div>
+
+            <p class="tagline">
+                Know before you trust.
+            </p>
+
+        </header>
+
+
+        <!-- INITIAL SCAN VIEW -->
+
+        <section
+            id="scanView"
+            class="scan-view"
+        >
+
+            <div class="intro">
+
+                <h2>
+                    Can you trust this website?
+                </h2>
+
+                <p>
+                    Scan the current page for common
+                    scam and trust risk signals.
+                </p>
+
+            </div>
+
+            <button
+                id="scanButton"
+                class="primary-button"
+                type="button"
+            >
+                Scan Website
+            </button>
+
+            <p class="privacy-note">
+                Rule-based analysis runs when you choose
+                to scan the current page.
+            </p>
+
+        </section>
+
+
+        <!-- LOADING VIEW -->
+
+        <section
+            id="loadingView"
+            class="loading-view hidden"
+        >
+
+            <div class="loader"></div>
+
+            <h2>
+                Checking this website...
+            </h2>
+
+            <p>
+                Scam Shield is analyzing trust and
+                risk signals.
+            </p>
+
+        </section>
+
+
+        <!-- RESULTS VIEW -->
+
+        <section
+            id="resultsView"
+            class="results-view hidden"
+        >
+
+            <div class="score-card">
+
+                <p class="score-label">
+                    Trust Score
+                </p>
+
+                <div
+                    id="scoreNumber"
+                    class="score-number"
+                >
+                    --
+                </div>
+
+                <div
+                    id="statusBadge"
+                    class="status-badge"
+                >
+                    Checking
+                </div>
+
+            </div>
+
+
+            <div class="domain-card">
+
+                <p class="section-label">
+                    Website
+                </p>
+
+                <p
+                    id="domainName"
+                    class="domain-name"
+                >
+                    --
+                </p>
+
+            </div>
+
+
+            <div class="reasons-card">
+
+                <h2>
+                    Why this score?
+                </h2>
+
+                <div id="reasonsList">
+
+                    <p class="reason-item">
+                        No major risk signals detected.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="scan-details">
+
+                <h2>
+                    Scan Details
+                </h2>
+
+                <div class="detail-row">
+                    <span>Secure connection</span>
+                    <strong id="httpsStatus">--</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Forms detected</span>
+                    <strong id="formsCount">--</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>External links</span>
+                    <strong id="externalLinksCount">--</strong>
+                </div>
+
+            </div>
+
+
+            <button
+                id="scanAgainButton"
+                class="secondary-button"
+                type="button"
+            >
+                Scan Again
+            </button>
+
+        </section>
+
+
+        <!-- ERROR VIEW -->
+
+        <section
+            id="errorView"
+            class="error-view hidden"
+        >
+
+            <div class="error-icon">
+                !
+            </div>
+
+            <h2>
+                Scan unavailable
+            </h2>
+
+            <p id="errorMessage">
+                Scam Shield could not scan this page.
+            </p>
+
+            <button
+                id="tryAgainButton"
+                class="secondary-button"
+                type="button"
+            >
+                Try Again
+            </button>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="footer">
+
+            <span>
+                Scam Shield
+            </span>
+
+            <span class="footer-divider">
+                •
+            </span>
+
+            <span>
+                Arthiva Labs
+            </span>
+
+        </footer>
+
+    </main>
+
 
     <script src="popup.js"></script>
 
 </body>
-
 </html>
