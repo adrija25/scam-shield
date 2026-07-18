@@ -17,6 +17,9 @@
         content="Upgrade to Scam Shield Pro for unlimited website scans and advanced scam protection."
     >
 
+    <!-- Razorpay Checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <style>
 
         * {
@@ -201,6 +204,15 @@
             color: #596a62;
             font-size: 13px;
             line-height: 1.5;
+        }
+
+        .payment-message.success {
+            color: #17604d;
+            font-weight: 600;
+        }
+
+        .payment-message.error {
+            color: #a42a2a;
         }
 
         .secure-note {
@@ -406,7 +418,7 @@
             "scam-shield";
 
         const OFFER =
-            "pro-lifetime";
+            "pro";
 
 
         const payButton =
@@ -420,10 +432,283 @@
             );
 
 
-        function showMessage(message) {
+        function showMessage(
+            message,
+            type = ""
+        ) {
 
             paymentMessage.textContent =
                 message;
+
+            paymentMessage.classList.remove(
+                "success",
+                "error"
+            );
+
+            if (type) {
+                paymentMessage.classList.add(
+                    type
+                );
+            }
+
+        }
+
+
+        function resetPaymentButton() {
+
+            payButton.disabled =
+                false;
+
+            payButton.textContent =
+                "Upgrade to Pro";
+
+        }
+
+
+        async function verifyRazorpayPayment(
+            paymentResponse
+        ) {
+
+            showMessage(
+                "Payment received. Verifying your Scam Shield Pro access..."
+            );
+
+
+            const response =
+                await fetch(
+                    ARTHIVA_API_BASE +
+                    "/api/verify-payment",
+                    {
+                        method:
+                            "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify({
+                                product:
+                                    PRODUCT,
+
+                                offer:
+                                    OFFER,
+
+                                paymentProvider:
+                                    "razorpay",
+
+                                razorpay_order_id:
+                                    paymentResponse
+                                        .razorpay_order_id,
+
+                                razorpay_payment_id:
+                                    paymentResponse
+                                        .razorpay_payment_id,
+
+                                razorpay_signature:
+                                    paymentResponse
+                                        .razorpay_signature
+                            })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success ||
+                !data.verified
+            ) {
+
+                throw new Error(
+                    data.error ||
+                    "Payment verification failed."
+                );
+
+            }
+
+
+            if (!data.proAccessToken) {
+
+                throw new Error(
+                    "Payment was verified, but the Pro access token was not returned."
+                );
+
+            }
+
+
+            /*
+                Save the Pro token temporarily
+                in the checkout website.
+
+                In the next step, we will connect
+                this token back to the Chrome
+                extension itself.
+            */
+
+
+            localStorage.setItem(
+                "scamShieldProAccessToken",
+                data.proAccessToken
+            );
+
+
+            localStorage.setItem(
+                "scamShieldPro",
+                "true"
+            );
+
+
+            showMessage(
+                "Payment verified. Scam Shield Pro has been activated. You can return to the extension.",
+                "success"
+            );
+
+
+            payButton.disabled =
+                true;
+
+            payButton.textContent =
+                "Pro Activated";
+
+        }
+
+
+        function openRazorpayCheckout(
+            paymentData
+        ) {
+
+            if (
+                typeof Razorpay ===
+                "undefined"
+            ) {
+
+                throw new Error(
+                    "Razorpay Checkout could not be loaded."
+                );
+
+            }
+
+
+            const options = {
+
+                key:
+                    paymentData
+                        .razorpayKeyId,
+
+                amount:
+                    paymentData.amount,
+
+                currency:
+                    paymentData.currency,
+
+                name:
+                    "Arthiva Labs",
+
+                description:
+                    "Scam Shield Pro",
+
+                order_id:
+                    paymentData.orderId,
+
+
+                handler:
+                    async function (
+                        response
+                    ) {
+
+                        try {
+
+                            await verifyRazorpayPayment(
+                                response
+                            );
+
+                        } catch (
+                            error
+                        ) {
+
+                            console.error(
+                                "Scam Shield verification error",
+                                error
+                            );
+
+
+                            showMessage(
+                                error.message ||
+                                "Payment verification failed. Please contact Arthiva Labs support.",
+                                "error"
+                            );
+
+
+                            resetPaymentButton();
+
+                        }
+
+                    },
+
+
+                modal: {
+
+                    ondismiss:
+                        function () {
+
+                            showMessage(
+                                "Payment was not completed."
+                            );
+
+                            resetPaymentButton();
+
+                        }
+
+                },
+
+
+                theme: {
+                    color:
+                        "#17604d"
+                }
+
+            };
+
+
+            const checkout =
+                new Razorpay(
+                    options
+                );
+
+
+            checkout.on(
+                "payment.failed",
+
+                function (
+                    response
+                ) {
+
+                    console.error(
+                        "Razorpay payment failed",
+                        response.error
+                    );
+
+
+                    showMessage(
+                        response.error
+                            ?.description ||
+                        "Payment could not be completed. Please try again.",
+                        "error"
+                    );
+
+
+                    resetPaymentButton();
+
+                }
+            );
+
+
+            checkout.open();
 
         }
 
@@ -435,6 +720,7 @@
 
             payButton.textContent =
                 "Preparing secure payment...";
+
 
             showMessage(
                 "Connecting to the secure Arthiva Labs payment system..."
@@ -503,6 +789,23 @@
                     }
 
 
+                    /*
+                        Save PayPal order information
+                        before redirecting the customer.
+
+                        After PayPal sends the customer
+                        back to Scam Shield, we will
+                        use this order ID to complete
+                        verification.
+                    */
+
+
+                    localStorage.setItem(
+                        "scamShieldPendingPayPalOrderId",
+                        data.orderId
+                    );
+
+
                     showMessage(
                         "Opening secure PayPal checkout..."
                     );
@@ -510,6 +813,7 @@
 
                     window.location.href =
                         data.approveUrl;
+
 
                     return;
 
@@ -526,40 +830,14 @@
                 ) {
 
                     showMessage(
-                        "Your secure Razorpay order is ready. Checkout connection is being prepared."
+                        "Opening secure Razorpay checkout..."
                     );
 
 
-                    /*
-                        Razorpay Checkout will be
-                        connected in the next step.
-
-                        We intentionally stop here
-                        instead of initiating an
-                        incomplete payment flow.
-                    */
-
-
-                    console.log(
-                        "Razorpay order prepared",
-                        {
-                            orderId:
-                                data.orderId,
-
-                            amount:
-                                data.amount,
-
-                            currency:
-                                data.currency
-                        }
+                    openRazorpayCheckout(
+                        data
                     );
 
-
-                    payButton.disabled =
-                        false;
-
-                    payButton.textContent =
-                        "Upgrade to Pro";
 
                     return;
 
@@ -571,7 +849,9 @@
                 );
 
 
-            } catch (error) {
+            } catch (
+                error
+            ) {
 
                 console.error(
                     "Scam Shield payment error",
@@ -581,15 +861,12 @@
 
                 showMessage(
                     error.message ||
-                    "Unable to prepare payment. Please try again."
+                    "Unable to prepare payment. Please try again.",
+                    "error"
                 );
 
 
-                payButton.disabled =
-                    false;
-
-                payButton.textContent =
-                    "Try Again";
+                resetPaymentButton();
 
             }
 
