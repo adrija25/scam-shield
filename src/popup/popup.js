@@ -10,13 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
         "https://arthiva-labs.pages.dev";
 
     const CHECKOUT_URL =
-       "https://scam-shield-2sn.pages.dev/checkout.html";
+        "https://scam-shield-2sn.pages.dev/checkout.html";
 
     const PRO_TOKEN_KEY =
         "scamShieldProAccessToken";
 
     const PRO_STATUS_KEY =
         "scamShieldPro";
+
+    const INSTALLATION_ID_KEY =
+        "scamShieldInstallationId";
 
     let isProUser = false;
 
@@ -169,6 +172,114 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
         });
+
+    }
+
+
+    // -----------------------------------------
+    // GET OR CREATE INSTALLATION ID
+    // -----------------------------------------
+
+    function getInstallationId() {
+
+        return new Promise(
+            (resolve, reject) => {
+
+                chrome.storage.local.get(
+                    [
+                        INSTALLATION_ID_KEY
+                    ],
+                    (data) => {
+
+                        if (
+                            chrome.runtime
+                                .lastError
+                        ) {
+
+                            reject(
+                                new Error(
+                                    "Scam Shield could not access this browser's installation information."
+                                )
+                            );
+
+                            return;
+
+                        }
+
+
+                        const existingId =
+                            data[
+                                INSTALLATION_ID_KEY
+                            ];
+
+
+                        if (
+                            typeof existingId ===
+                                "string" &&
+                            existingId.length >= 16
+                        ) {
+
+                            resolve(
+                                existingId
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                            Create a random UUID for
+                            this Scam Shield installation.
+
+                            The ID does not contain the
+                            user's name, email address,
+                            IP address, or device details.
+
+                            It exists only to enforce the
+                            allowed number of Scam Shield
+                            Pro installations.
+                        */
+
+                        const installationId =
+                            crypto.randomUUID();
+
+
+                        chrome.storage.local.set(
+                            {
+                                [INSTALLATION_ID_KEY]:
+                                    installationId
+                            },
+                            () => {
+
+                                if (
+                                    chrome.runtime
+                                        .lastError
+                                ) {
+
+                                    reject(
+                                        new Error(
+                                            "Scam Shield could not save this browser's installation information."
+                                        )
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                resolve(
+                                    installationId
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
 
     }
 
@@ -520,6 +631,10 @@ document.addEventListener("DOMContentLoaded", () => {
         token
     ) {
 
+        const installationId =
+            await getInstallationId();
+
+
         const response =
             await fetch(
                 ARTHIVA_API_BASE +
@@ -536,7 +651,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     body:
                         JSON.stringify({
                             token:
-                                token
+                                token,
+
+                            installationId:
+                                installationId
                         })
                 }
             );
@@ -759,77 +877,30 @@ document.addEventListener("DOMContentLoaded", () => {
     // RESTORE AND REVALIDATE PRO ACCESS
     // -----------------------------------------
 
-   function restoreProAccess() {
+    function restoreProAccess() {
 
-    chrome.storage.local.get(
-        [
-            PRO_TOKEN_KEY,
-            PRO_STATUS_KEY
-        ],
-        async (data) => {
+        chrome.storage.local.get(
+            [
+                PRO_TOKEN_KEY,
+                PRO_STATUS_KEY
+            ],
+            async (data) => {
 
-            const storedToken =
-                data[
-                    PRO_TOKEN_KEY
-                ];
-
-
-            if (
-                !storedToken ||
-                data[
-                    PRO_STATUS_KEY
-                ] !== true
-            ) {
-
-                isProUser =
-                    false;
-
-                updatePlanUI();
-
-                return;
-
-            }
+                const storedToken =
+                    data[
+                        PRO_TOKEN_KEY
+                    ];
 
 
-            try {
-
-                const response =
-                    await fetch(
-                        ARTHIVA_API_BASE +
-                        "/api/activate-scam-shield",
-                        {
-                            method:
-                                "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify({
-                                    token:
-                                        storedToken
-                                })
-                        }
-                    );
-
-
-                /*
-                    If the Arthiva server itself
-                    is temporarily unavailable,
-                    preserve the previously verified
-                    local Pro entitlement.
-
-                    This prevents a legitimate buyer
-                    from losing access just because
-                    of a temporary server outage.
-                */
-
-                if (!response.ok) {
+                if (
+                    !storedToken ||
+                    data[
+                        PRO_STATUS_KEY
+                    ] !== true
+                ) {
 
                     isProUser =
-                        true;
+                        false;
 
                     updatePlanUI();
 
@@ -838,20 +909,169 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                let validationData;
-
-
                 try {
 
-                    validationData =
-                        await response.json();
+                    /*
+                        Reuse the same permanent
+                        installation ID that was
+                        registered when Pro was
+                        originally activated.
+                    */
+
+                    const installationId =
+                        await getInstallationId();
+
+
+                    const response =
+                        await fetch(
+                            ARTHIVA_API_BASE +
+                            "/api/activate-scam-shield",
+                            {
+                                method:
+                                    "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        token:
+                                            storedToken,
+
+                                        installationId:
+                                            installationId
+                                    })
+                            }
+                        );
+
+
+                    /*
+                        If the Arthiva server itself
+                        is temporarily unavailable,
+                        preserve the previously verified
+                        local Pro entitlement.
+
+                        This prevents a legitimate buyer
+                        from losing access just because
+                        of a temporary server outage.
+                    */
+
+                    if (!response.ok) {
+
+                        isProUser =
+                            true;
+
+                        updatePlanUI();
+
+                        return;
+
+                    }
+
+
+                    let validationData;
+
+
+                    try {
+
+                        validationData =
+                            await response.json();
+
+                    } catch (error) {
+
+                        /*
+                            Invalid/unreadable server
+                            response is treated as a
+                            temporary validation failure.
+                        */
+
+                        isProUser =
+                            true;
+
+                        updatePlanUI();
+
+                        return;
+
+                    }
+
+
+                    /*
+                        The server responded normally.
+
+                        Pro remains active only if the
+                        entitlement is explicitly valid.
+                    */
+
+                    if (
+                        validationData.success ===
+                            true &&
+
+                        validationData.valid ===
+                            true &&
+
+                        validationData.activated ===
+                            true &&
+
+                        validationData.pro ===
+                            true &&
+
+                        validationData.product ===
+                            "scam-shield" &&
+
+                        validationData.offer ===
+                            "pro"
+                    ) {
+
+                        isProUser =
+                            true;
+
+                        updatePlanUI();
+
+                        return;
+
+                    }
+
+
+                    /*
+                        The server definitively rejected
+                        the entitlement.
+
+                        Remove the stored Pro state.
+                    */
+
+                    chrome.storage.local.remove(
+                        [
+                            PRO_TOKEN_KEY,
+                            PRO_STATUS_KEY
+                        ],
+                        () => {
+
+                            isProUser =
+                                false;
+
+                            updatePlanUI();
+
+                        }
+                    );
+
 
                 } catch (error) {
 
+                    console.error(
+                        "Unable to revalidate stored Scam Shield Pro access",
+                        error
+                    );
+
+
                     /*
-                        Invalid/unreadable server
-                        response is treated as a
-                        temporary validation failure.
+                        Network failure or temporary
+                        connection problem.
+
+                        Keep the previously verified
+                        local entitlement and try
+                        validation again when the
+                        popup is opened later.
                     */
 
                     isProUser =
@@ -859,100 +1079,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     updatePlanUI();
 
-                    return;
-
                 }
-
-
-                /*
-                    The server responded normally.
-
-                    Pro remains active only if the
-                    entitlement is explicitly valid.
-                */
-
-                if (
-                    validationData.success ===
-                        true &&
-
-                    validationData.valid ===
-                        true &&
-
-                    validationData.activated ===
-                        true &&
-
-                    validationData.pro ===
-                        true &&
-
-                    validationData.product ===
-                        "scam-shield" &&
-
-                    validationData.offer ===
-                        "pro"
-                ) {
-
-                    isProUser =
-                        true;
-
-                    updatePlanUI();
-
-                    return;
-
-                }
-
-
-                /*
-                    The server definitively rejected
-                    the entitlement.
-
-                    Remove the stored Pro state.
-                */
-
-                chrome.storage.local.remove(
-                    [
-                        PRO_TOKEN_KEY,
-                        PRO_STATUS_KEY
-                    ],
-                    () => {
-
-                        isProUser =
-                            false;
-
-                        updatePlanUI();
-
-                    }
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Unable to revalidate stored Scam Shield Pro access",
-                    error
-                );
-
-
-                /*
-                    Network failure or temporary
-                    connection problem.
-
-                    Keep the previously verified
-                    local entitlement and try
-                    validation again when the
-                    popup is opened later.
-                */
-
-                isProUser =
-                    true;
-
-                updatePlanUI();
 
             }
+        );
 
-        }
-    );
+    }
 
-}
+
     // -----------------------------------------
     // DISPLAY ERROR
     // -----------------------------------------
