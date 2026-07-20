@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Date Shield Pro Checkout | Arthiva Labs</title>
+
+  <meta
+    name="description"
+    content="Upgrade to Date Shield Pro for detailed dating-safety and romance-scam warning signal analysis."
+  />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f4fc;
+      color: #222222;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .checkout-card {
+      width: 100%;
+      max-width: 560px;
+      background: #ffffff;
+      border: 1px solid #ded8eb;
+      border-radius: 18px;
+      padding: 32px;
+      box-shadow: 0 12px 35px rgba(65, 42, 110, 0.1);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      color: #533493;
+      font-size: 32px;
+    }
+
+    .brand p {
+      margin: 8px 0 0;
+      color: #666666;
+      font-size: 15px;
+    }
+
+    .product-box {
+      padding: 22px;
+      background: #faf8fe;
+      border: 1px solid #e2dcef;
+      border-radius: 14px;
+      margin-bottom: 24px;
+    }
+
+    .product-badge {
+      display: inline-block;
+      background: #533493;
+      color: #ffffff;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .product-box h2 {
+      margin: 0 0 10px;
+      font-size: 23px;
+      color: #2d2440;
+    }
+
+    .product-box p {
+      margin: 0;
+      color: #666666;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .features {
+      margin: 20px 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .features li {
+      margin: 10px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .features li::before {
+      content: "✓";
+      color: #533493;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    .price-box {
+      text-align: center;
+      margin: 26px 0;
+    }
+
+    .price {
+      font-size: 32px;
+      font-weight: bold;
+      color: #533493;
+    }
+
+    .price-note {
+      margin-top: 5px;
+      font-size: 13px;
+      color: #777777;
+    }
+
+    .region-select {
+      margin-bottom: 18px;
+    }
+
+    .region-select label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #444444;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d8d1e7;
+      border-radius: 9px;
+      background: #ffffff;
+      font-size: 14px;
+    }
+
+    .pay-button {
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #533493;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .pay-button:hover {
+      opacity: 0.94;
+    }
+
+    .pay-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .status.info {
+      display: block;
+      background: #f1ecfa;
+      color: #493275;
+    }
+
+    .status.error {
+      display: block;
+      background: #fff0f0;
+      color: #9b2525;
+    }
+
+    .status.success {
+      display: block;
+      background: #eef9f1;
+      color: #27643a;
+    }
+
+    .activation-box {
+      display: none;
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid #d8d1e7;
+      border-radius: 12px;
+      background: #faf8fe;
+    }
+
+    .activation-box h3 {
+      margin-top: 0;
+      color: #533493;
+    }
+
+    .activation-key {
+      margin: 14px 0;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px dashed #9d8abd;
+      border-radius: 8px;
+      word-break: break-all;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .copy-button {
+      padding: 10px 16px;
+      border: 1px solid #533493;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #533493;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .instructions {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #555555;
+      line-height: 1.6;
+    }
+
+    .security-note {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #e6e1ee;
+      color: #777777;
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #533493;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="checkout-card">
+
+      <div class="brand">
+        <h1>Date Shield</h1>
+        <p>Know before you trust.</p>
+      </div>
+
+      <div class="product-box">
+
+        <span class="product-badge">
+          DATE SHIELD PRO
+        </span>
+
+        <h2>Unlock the full safety analysis</h2>
+
+        <p>
+          Upgrade Date Shield to access detailed explanations
+          for detected dating-safety and romance-scam warning
+          patterns, along with practical recommended next steps.
+        </p>
+
+        <ul class="features">
+          <li>Detailed warning signal explanations</li>
+          <li>Recommended verification and safety steps</li>
+          <li>Dating profile and conversation text analysis</li>
+          <li>Product-specific Date Shield Pro activation</li>
+          <li>Activation on up to 2 unique installations</li>
+        </ul>
+
+      </div>
+
+      <div class="price-box">
+
+        <div
+          id="price"
+          class="price"
+        >
+          ₹299
+        </div>
+
+        <div class="price-note">
+          One-time payment
+        </div>
+
+      </div>
+
+      <div class="region-select">
+
+        <label for="region">
+          Payment region
+        </label>
+
+        <select id="region">
+          <option value="india">
+            India — ₹299
+          </option>
+
+          <option value="international">
+            International — $6
+          </option>
+        </select>
+
+      </div>
+
+      <button
+        id="payButton"
+        class="pay-button"
+        type="button"
+      >
+        Unlock Date Shield Pro
+      </button>
+
+      <div
+        id="status"
+        class="status"
+      ></div>
+
+      <div
+        id="activationBox"
+        class="activation-box"
+      >
+
+        <h3>
+          Your Date Shield Pro Activation Key
+        </h3>
+
+        <p>
+          Your payment was verified successfully.
+          Save this activation key.
+        </p>
+
+        <div
+          id="activationKey"
+          class="activation-key"
+        ></div>
+
+        <button
+          id="copyButton"
+          class="copy-button"
+          type="button"
+        >
+          Copy Activation Key
+        </button>
+
+        <div class="instructions">
+
+          <strong>How to activate Date Shield Pro:</strong>
+
+          <br /><br />
+
+          1. Install or open the Date Shield browser extension.
+
+          <br />
+
+          2. Click
+          <strong>
+            I Already Have an Activation Key
+          </strong>.
+
+          <br />
+
+          3. Paste your activation key.
+
+          <br />
+
+          4. Activate Date Shield Pro.
+
+          <br /><br />
+
+          Your key is specifically for Date Shield Pro
+          and cannot activate another Arthiva Shield product.
+
+        </div>
+
+      </div>
+
+      <div class="security-note">
+        Payments are processed through Arthiva Labs'
+        secure payment infrastructure. Date Shield provides
+        informational warning signals and does not determine
+        whether a person is deceptive, fraudulent, safe,
+        or authentic.
+      </div>
+
+      <a
+        class="back-link"
+        href="./"
+      >
+        ← Back to Arthiva Labs Browser Extensions
+      </a>
+
+    </section>
+
+  </main>
+
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+  <script>
+
+    const API_BASE =
+      "https://arthiva-labs.pages.dev/api";
+
+
+    const PRODUCT =
+      "date-shield";
+
+
+    const OFFER =
+      "pro";
+
+
+    const regionSelect =
+      document.getElementById(
+        "region"
+      );
+
+
+    const price =
+      document.getElementById(
+        "price"
+      );
+
+
+    const payButton =
+      document.getElementById(
+        "payButton"
+      );
+
+
+    const statusBox =
+      document.getElementById(
+        "status"
+      );
+
+
+    const activationBox =
+      document.getElementById(
+        "activationBox"
+      );
+
+
+    const activationKey =
+      document.getElementById(
+        "activationKey"
+      );
+
+
+    const copyButton =
+      document.getElementById(
+        "copyButton"
+      );
+
+
+    function setStatus(
+      message,
+      type = "info"
+    ) {
+
+      statusBox.textContent =
+        message;
+
+      statusBox.className =
+        "status " + type;
+
+    }
+
+
+    function clearStatus() {
+
+      statusBox.textContent =
+        "";
+
+      statusBox.className =
+        "status";
+
+    }
+
+
+    function showActivationKey(
+      token
+    ) {
+
+      if (!token) {
+        return;
+      }
+
+
+      localStorage.setItem(
+        "dateShieldProToken",
+        token
+      );
+
+
+      activationKey.textContent =
+        token;
+
+
+      activationBox.style.display =
+        "block";
+
+
+      setStatus(
+        "Payment verified. Your Date Shield Pro activation key is ready.",
+        "success"
+      );
+
+    }
+
+
+    regionSelect.addEventListener(
+      "change",
+      function () {
+
+        if (
+          regionSelect.value ===
+          "international"
+        ) {
+
+          price.textContent =
+            "$6";
+
+        } else {
+
+          price.textContent =
+            "₹299";
+
+        }
+
+      }
+    );
+
+
+    copyButton.addEventListener(
+      "click",
+      async function () {
+
+        const token =
+          activationKey.textContent.trim();
+
+
+        if (!token) {
+          return;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            token
+          );
+
+
+          copyButton.textContent =
+            "Copied!";
+
+
+          setTimeout(
+            function () {
+
+              copyButton.textContent =
+                "Copy Activation Key";
+
+            },
+            2000
+          );
+
+        } catch (error) {
+
+          setStatus(
+            "Could not copy automatically. Please copy the activation key manually.",
+            "error"
+          );
+
+        }
+
+      }
+    );
+
+
+    async function createPayment(
+      region
+    ) {
+
+      const response =
+        await fetch(
+          API_BASE +
+            "/create-payment",
+          {
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+                product:
+                  PRODUCT,
+
+                offer:
+                  OFFER,
+
+                region:
+                  region
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Could not create payment."
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    async function verifyRazorpayPayment(
+      paymentData,
+      payment
+    ) {
+
+      const response =
+        await fetch(
+          API_BASE +
+            "/verify-payment",
+          {
+            method:
+              "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body:
+              JSON.stringify({
+
+                gateway:
+                  "razorpay",
+
+                product:
+                  PRODUCT,
+
+                offer:
+                  OFFER,
+
+                razorpay_order_id:
+                  payment.razorpay_order_id,
+
+                razorpay_payment_id:
+                  payment.razorpay_payment_id,
+
+                razorpay_signature:
+                  payment.razorpay_signature
+
+              })
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.ok
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Payment verification failed."
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    function openRazorpay(
+      paymentData
+    ) {
+
+      if (
+        typeof Razorpay ===
+        "undefined"
+      ) {
+
+        throw new Error(
+          "Razorpay checkout could not be loaded."
+        );
+
+      }
+
+
+      const options = {
+
+        key:
+          paymentData.keyId,
+
+        amount:
+          paymentData.amount,
+
+        currency:
+          paymentData.currency,
+
+        name:
+          "Arthiva Labs",
+
+        description:
+          "Date Shield Pro",
+
+        order_id:
+          paymentData.orderId,
+
+        handler:
+          async function (
+            payment
+          ) {
+
+            try {
+
+              setStatus(
+                "Verifying your payment...",
+                "info"
+              );
+
+
+              const result =
+                await verifyRazorpayPayment(
+                  paymentData,
+                  payment
+                );
+
+
+              showActivationKey(
+                result.token
+              );
+
+            } catch (error) {
+
+              setStatus(
+                error.message ||
+                "Payment verification failed.",
+                "error"
+              );
+
+            } finally {
+
+              payButton.disabled =
+                false;
+
+            }
+
+          },
+
+        theme: {
+          color:
+            "#533493"
+        }
+
+      };
+
+
+      const razorpay =
+        new Razorpay(
+          options
+        );
+
+
+      razorpay.on(
+        "payment.failed",
+        function () {
+
+          setStatus(
+            "The payment was not completed. You have not been charged for an incomplete payment.",
+            "error"
+          );
+
+
+          payButton.disabled =
+            false;
+
+        }
+      );
+
+
+      razorpay.open();
+
+    }
+
+
+    async function handlePayment() {
+
+      clearStatus();
+
+
+      activationBox.style.display =
+        "none";
+
+
+      payButton.disabled =
+        true;
+
+
+      const region =
+        regionSelect.value;
+
+
+      try {
+
+        setStatus(
+          "Preparing secure checkout...",
+          "info"
+        );
+
+
+        const paymentData =
+          await createPayment(
+            region
+          );
+
+
+        if (
+          paymentData.gateway ===
+          "razorpay"
+        ) {
+
+          setStatus(
+            "Opening Razorpay checkout...",
+            "info"
+          );
+
+
+          openRazorpay(
+            paymentData
+          );
+
+
+          return;
+
+        }
+
+
+        if (
+          paymentData.gateway ===
+          "paypal"
+        ) {
+
+          if (
+            !paymentData.approveUrl
+          ) {
+
+            throw new Error(
+              "PayPal approval URL was not returned."
+            );
+
+          }
+
+
+          localStorage.setItem(
+            "dateShieldPayPalOrderId",
+            paymentData.orderId
+          );
+
+
+          localStorage.setItem(
+            "dateShieldPayPalProduct",
+            PRODUCT
+          );
+
+
+          localStorage.setItem(
+            "dateShieldPayPalOffer",
+            OFFER
+          );
+
+
+          window.location.href =
+            paymentData.approveUrl;
+
+
+          return;
+
+        }
+
+
+        throw new Error(
+          "Unsupported payment gateway."
+        );
+
+      } catch (error) {
+
+        setStatus(
+          error.message ||
+          "Could not start checkout.",
+          "error"
+        );
+
+
+        payButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    async function handlePayPalReturn() {
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const paypalToken =
+        params.get(
+          "token"
+        );
+
+
+      const storedOrderId =
+        localStorage.getItem(
+          "dateShieldPayPalOrderId"
+        );
+
+
+      if (
+        !paypalToken &&
+        !storedOrderId
+      ) {
+
+        return;
+
+      }
+
+
+      const orderId =
+        paypalToken ||
+        storedOrderId;
+
+
+      try {
+
+        payButton.disabled =
+          true;
+
+
+        setStatus(
+          "Verifying your PayPal payment...",
+          "info"
+        );
+
+
+        const response =
+          await fetch(
+            API_BASE +
+              "/verify-payment",
+            {
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  gateway:
+                    "paypal",
+
+                  product:
+                    PRODUCT,
+
+                  offer:
+                    OFFER,
+
+                  orderId:
+                    orderId
+
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.ok
+        ) {
+
+          throw new Error(
+            data.error ||
+            "PayPal payment verification failed."
+          );
+
+        }
+
+
+        localStorage.removeItem(
+          "dateShieldPayPalOrderId"
+        );
+
+
+        localStorage.removeItem(
+          "dateShieldPayPalProduct"
+        );
+
+
+        localStorage.removeItem(
+          "dateShieldPayPalOffer"
+        );
+
+
+        showActivationKey(
+          data.token
+        );
+
+
+        if (
+          window.history &&
+          window.history.replaceState
+        ) {
+
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname
+          );
+
+        }
+
+      } catch (error) {
+
+        setStatus(
+          error.message ||
+          "Could not verify the PayPal payment.",
+          "error"
+        );
+
+      } finally {
+
+        payButton.disabled =
+          false;
+
+      }
+
+    }
+
+
+    payButton.addEventListener(
+      "click",
+      handlePayment
+    );
+
+
+    handlePayPalReturn();
+
+  </script>
+
+</body>
+</html>
