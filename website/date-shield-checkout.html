@@ -311,24 +311,6 @@
 
       </div>
 
-      <div class="region-select">
-
-        <label for="region">
-          Payment region
-        </label>
-
-        <select id="region">
-          <option value="india">
-            India — ₹299
-          </option>
-
-          <option value="international">
-            International — $6
-          </option>
-        </select>
-
-      </div>
-
       <button
         id="payButton"
         class="pay-button"
@@ -436,15 +418,7 @@
 
     const OFFER =
       "pro";
-
-
-    const regionSelect =
-      document.getElementById(
-        "region"
-      );
-
-
-    const price =
+const price =
       document.getElementById(
         "price"
       );
@@ -535,30 +509,6 @@
 
     }
 
-
-    regionSelect.addEventListener(
-      "change",
-      function () {
-
-        if (
-          regionSelect.value ===
-          "international"
-        ) {
-
-          price.textContent =
-            "$6";
-
-        } else {
-
-          price.textContent =
-            "₹299";
-
-        }
-
-      }
-    );
-
-
     copyButton.addEventListener(
       "click",
       async function () {
@@ -606,9 +556,7 @@
     );
 
 
-    async function createPayment(
-      region
-    ) {
+    async function createPayment() {
 
       const response =
         await fetch(
@@ -629,10 +577,7 @@
                   PRODUCT,
 
                 offer:
-                  OFFER,
-
-                region:
-                  region
+                  OFFER
               })
           }
         );
@@ -850,13 +795,7 @@
 
       payButton.disabled =
         true;
-
-
-      const region =
-        regionSelect.value;
-
-
-      try {
+try {
 
         setStatus(
           "Preparing secure checkout...",
@@ -865,9 +804,32 @@
 
 
         const paymentData =
-          await createPayment(
-            region
-          );
+          await createPayment();
+
+
+        if (
+          paymentData.currency === "INR"
+        ) {
+
+          price.textContent =
+            "₹" +
+            (
+              Number(paymentData.amount) /
+              100
+            ).toFixed(0);
+
+        } else if (
+          paymentData.currency === "USD"
+        ) {
+
+          price.textContent =
+            "$" +
+            (
+              Number(paymentData.amount) /
+              100
+            ).toFixed(0);
+
+        }
 
 
         if (
