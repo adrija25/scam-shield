@@ -239,6 +239,61 @@
       line-height: 1.6;
     }
 
+
+    .purchased-state {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .purchased-state.visible {
+      display: block;
+    }
+
+    .purchased-button {
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #9b8bb8;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: default;
+    }
+
+    .activation-guide {
+      margin-top: 18px;
+      padding: 20px;
+      border: 1px solid #d8d1e7;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .activation-guide h3 {
+      margin: 0 0 10px;
+      color: #2d2440;
+      font-size: 18px;
+    }
+
+    .activation-guide p,
+    .activation-guide ol {
+      color: #555555;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .activation-guide ol {
+      padding-left: 22px;
+      margin-bottom: 0;
+    }
+
+    .activation-reminder {
+      margin-top: 16px;
+      color: #7a5a18;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
     .security-note {
       margin-top: 22px;
       padding-top: 18px;
@@ -329,13 +384,27 @@
         class="activation-box"
       >
 
+        <div
+          id="purchasedState"
+          class="purchased-state"
+        >
+          <button
+            class="purchased-button"
+            type="button"
+            disabled
+          >
+            Pro Purchased
+          </button>
+        </div>
+
         <h3>
           Your Date Shield Pro Activation Key
         </h3>
 
         <p>
           Your payment was verified successfully.
-          Save this activation key.
+          Copy your activation key, then activate Pro
+          inside the Date Shield browser extension.
         </p>
 
         <div
@@ -351,33 +420,46 @@
           Copy Activation Key
         </button>
 
-        <div class="instructions">
+        <div class="activation-guide">
 
-          <strong>How to activate Date Shield Pro:</strong>
+          <h3>
+            How to activate Date Shield Pro
+          </h3>
 
-          <br /><br />
+          <p>
+            Your purchase is complete. Follow these steps
+            to activate Pro inside the Date Shield browser extension.
+          </p>
 
-          1. Install or open the Date Shield browser extension.
+          <ol>
+            <li>
+              Click <strong>Copy Activation Key</strong> above.
+            </li>
+            <li>
+              Install Date Shield from the Chrome Web Store
+              when the published listing is available, or open
+              your already installed Date Shield extension.
+            </li>
+            <li>
+              Open the Date Shield extension in Chrome.
+            </li>
+            <li>
+              Click <strong>I Already Have an Activation Key</strong>.
+            </li>
+            <li>
+              Paste your activation key.
+            </li>
+            <li>
+              Click <strong>Activate Date Shield Pro</strong>.
+            </li>
+          </ol>
 
-          <br />
-
-          2. Click
-          <strong>
-            I Already Have an Activation Key
-          </strong>.
-
-          <br />
-
-          3. Paste your activation key.
-
-          <br />
-
-          4. Activate Date Shield Pro.
-
-          <br /><br />
-
-          Your key is specifically for Date Shield Pro
-          and cannot activate another Arthiva Shield product.
+          <div class="activation-reminder">
+            Keep this page open until you have copied your activation
+            key and activated Pro. Your Date Shield Pro key can be
+            activated on up to 2 unique installations and cannot
+            activate another Arthiva Shield product.
+          </div>
 
         </div>
 
@@ -448,6 +530,12 @@ const price =
       );
 
 
+    const purchasedState =
+      document.getElementById(
+        "purchasedState"
+      );
+
+
     const copyButton =
       document.getElementById(
         "copyButton"
@@ -502,8 +590,21 @@ const price =
         "block";
 
 
+      purchasedState.classList.add(
+        "visible"
+      );
+
+
+      payButton.disabled =
+        true;
+
+
+      payButton.textContent =
+        "Pro Purchased";
+
+
       setStatus(
-        "Payment verified. Your Date Shield Pro activation key is ready.",
+        "Payment verified. Copy your activation key, then open Date Shield and activate Pro.",
         "success"
       );
 
@@ -741,8 +842,14 @@ const price =
 
             } finally {
 
-              payButton.disabled =
-                false;
+              if (
+                !localStorage.getItem(
+                  "dateShieldProToken"
+                )
+              ) {
+                payButton.disabled =
+                  false;
+              }
 
             }
 
@@ -1057,8 +1164,14 @@ try {
 
       } finally {
 
-        payButton.disabled =
-          false;
+        if (
+          !localStorage.getItem(
+            "dateShieldProToken"
+          )
+        ) {
+          payButton.disabled =
+            false;
+        }
 
       }
 
