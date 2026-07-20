@@ -644,7 +644,7 @@
 
       if (
         !response.ok ||
-        !data.ok
+        !data.success
       ) {
 
         throw new Error(
@@ -681,7 +681,7 @@
             body:
               JSON.stringify({
 
-                gateway:
+                paymentProvider:
                   "razorpay",
 
                 product:
@@ -710,7 +710,7 @@
 
       if (
         !response.ok ||
-        !data.ok
+        !data.success
       ) {
 
         throw new Error(
@@ -745,7 +745,7 @@
       const options = {
 
         key:
-          paymentData.keyId,
+          paymentData.razorpayKeyId,
 
         amount:
           paymentData.amount,
@@ -783,7 +783,7 @@
 
 
               showActivationKey(
-                result.token
+                result.proAccessToken
               );
 
             } catch (error) {
@@ -871,7 +871,7 @@
 
 
         if (
-          paymentData.gateway ===
+          paymentData.paymentProvider ===
           "razorpay"
         ) {
 
@@ -892,7 +892,7 @@
 
 
         if (
-          paymentData.gateway ===
+          paymentData.paymentProvider ===
           "paypal"
         ) {
 
@@ -1018,7 +1018,7 @@
               body:
                 JSON.stringify({
 
-                  gateway:
+                  paymentProvider:
                     "paypal",
 
                   product:
@@ -1041,7 +1041,7 @@
 
         if (
           !response.ok ||
-          !data.ok
+          !data.success
         ) {
 
           throw new Error(
@@ -1068,7 +1068,7 @@
 
 
         showActivationKey(
-          data.token
+          data.proAccessToken
         );
 
 
