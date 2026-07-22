@@ -280,6 +280,25 @@
         }
 
         /* --------------------------------
+           REPEAT PURCHASE
+        -------------------------------- */
+
+        .repeat-purchase-note {
+            display: none;
+
+            margin: 16px 0 0;
+
+            color: #607069;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .repeat-purchase-note.visible {
+            display: block;
+        }
+
+        /* --------------------------------
            POST-PURCHASE ACTIVATION
         -------------------------------- */
 
@@ -582,6 +601,15 @@
                         Copy Activation Code
                     </button>
 
+                    <p
+                        class="repeat-purchase-note"
+                        id="repeatPurchaseNote"
+                    >
+                        Need another activation code for another installation?
+                        You can purchase another Scam Shield Pro licence.
+                        Each new verified purchase creates a new activation code.
+                    </p>
+
                     <div
                         class="payment-message"
                         id="paymentMessage"
@@ -725,6 +753,11 @@
                 "activationGuide"
             );
 
+        const repeatPurchaseNote =
+            document.getElementById(
+                "repeatPurchaseNote"
+            );
+
         const paymentMessage =
             document.getElementById(
                 "paymentMessage"
@@ -774,23 +807,53 @@
 
         }
 
+        function hasExistingPurchase() {
+
+            const existingToken =
+                localStorage.getItem(
+                    STORAGE_KEYS.proToken
+                );
+
+            const existingProStatus =
+                localStorage.getItem(
+                    STORAGE_KEYS.proActive
+                );
+
+            return Boolean(
+                existingToken &&
+                existingProStatus === "true"
+            );
+
+        }
+
         function resetPaymentButton() {
 
             payButton.disabled =
                 false;
 
-            payButton.textContent =
-                "Upgrade to Pro";
+            if (
+                hasExistingPurchase()
+            ) {
+
+                payButton.textContent =
+                    "Buy Another Licence";
+
+            } else {
+
+                payButton.textContent =
+                    "Upgrade to Pro";
+
+            }
 
         }
 
         function showActivatedState() {
 
             payButton.disabled =
-                true;
+                false;
 
             payButton.textContent =
-                "Pro Purchased";
+                "Buy Another Licence";
 
             activationButton
                 .classList
@@ -804,8 +867,14 @@
                     "visible"
                 );
 
+            repeatPurchaseNote
+                .classList
+                .add(
+                    "visible"
+                );
+
             showMessage(
-                "Payment verified. Copy your activation code, then open Scam Shield and activate Pro.",
+                "Payment verified. Copy your activation code to activate Scam Shield Pro. If you need another licence, you can purchase another below.",
                 "success"
             );
 
@@ -895,6 +964,18 @@
 
             }
 
+            /*
+                The checkout stores the most recently
+                purchased activation code.
+
+                A repeat purchase therefore replaces
+                the checkout page's previous code with
+                the newly purchased code.
+
+                It does NOT revoke or alter the old
+                entitlement in Arthiva's database.
+            */
+
             localStorage.setItem(
                 STORAGE_KEYS.proToken,
                 proAccessToken
@@ -914,6 +995,9 @@
                 STORAGE_KEYS
                     .pendingProvider
             );
+
+            activationButton.textContent =
+                "Copy Activation Code";
 
             showActivatedState();
 
@@ -1277,6 +1361,12 @@
 
                 resetPaymentButton();
 
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    window.location.pathname
+                );
+
                 return;
 
             }
@@ -1292,27 +1382,33 @@
                         .pendingPayPalOrder
                 );
 
-            const orderId =
-                returnedOrderId ||
-                storedOrderId;
-
-            if (!orderId) {
-
-                return;
-
-            }
-
             const pendingProvider =
                 localStorage.getItem(
                     STORAGE_KEYS
                         .pendingProvider
                 );
 
+            /*
+                A PayPal order is processed only when
+                PayPal actually returned an order token,
+                or when this checkout explicitly has a
+                pending PayPal transaction.
+            */
+
             if (
                 !returnedOrderId &&
-                pendingProvider !==
-                    "paypal"
+                pendingProvider !== "paypal"
             ) {
+
+                return;
+
+            }
+
+            const orderId =
+                returnedOrderId ||
+                storedOrderId;
+
+            if (!orderId) {
 
                 return;
 
@@ -1367,6 +1463,21 @@
 
             showMessage(
                 "Connecting to the secure Arthiva Labs payment system..."
+            );
+
+            /*
+                Clear stale pending payment state before
+                deliberately creating a brand-new order.
+            */
+
+            localStorage.removeItem(
+                STORAGE_KEYS
+                    .pendingPayPalOrder
+            );
+
+            localStorage.removeItem(
+                STORAGE_KEYS
+                    .pendingProvider
             );
 
             try {
@@ -1578,22 +1689,8 @@
 
         function restoreExistingPurchase() {
 
-            const existingToken =
-                localStorage.getItem(
-                    STORAGE_KEYS
-                        .proToken
-                );
-
-            const existingProStatus =
-                localStorage.getItem(
-                    STORAGE_KEYS
-                        .proActive
-                );
-
             if (
-                existingToken &&
-                existingProStatus ===
-                    "true"
+                hasExistingPurchase()
             ) {
 
                 showActivatedState();
@@ -1636,16 +1733,40 @@
 
         async function initialiseCheckout() {
 
-            const existingPurchase =
-                restoreExistingPurchase();
+            /*
+                IMPORTANT:
 
-            if (existingPurchase) {
+                Process a genuine PayPal return before
+                restoring the previously purchased state.
+
+                Otherwise an existing Scam Shield token
+                could cause an early return and prevent
+                verification of a newly completed PayPal
+                purchase.
+            */
+
+            const params =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const hasPayPalReturn =
+                params.has("token") ||
+                params.get("paypal") ===
+                    "cancelled" ||
+                localStorage.getItem(
+                    STORAGE_KEYS.pendingProvider
+                ) === "paypal";
+
+            if (hasPayPalReturn) {
+
+                await handlePayPalReturn();
 
                 return;
 
             }
 
-            await handlePayPalReturn();
+            restoreExistingPurchase();
 
         }
 
