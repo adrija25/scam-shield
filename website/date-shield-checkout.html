@@ -1296,6 +1296,19 @@ try {
     );
 
 
+    const savedDateShieldProToken =
+      localStorage.getItem(
+        "dateShieldProToken"
+      );
+
+
+    if (savedDateShieldProToken) {
+      showActivationKey(
+        savedDateShieldProToken
+      );
+    }
+
+
     handlePayPalReturn();
 
   </script>
