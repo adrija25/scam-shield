@@ -279,6 +279,37 @@
       cursor: default;
     }
 
+    .buy-another-box {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid #d8d1e7;
+      border-radius: 10px;
+      background: #ffffff;
+    }
+
+    .buy-another-box p {
+      margin: 0 0 12px;
+      color: #555555;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .buy-another-button {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #533493;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #533493;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .buy-another-button:hover {
+      background: #f7f4fc;
+    }
+
     .activation-guide {
       margin-top: 18px;
       padding: 20px;
@@ -482,11 +513,29 @@
 
           <div class="activation-reminder">
             Keep this page open until you have copied your activation
-            key and activated Pro. Your Date Shield Pro key can be
-            activated on up to 2 unique installations and cannot
+            key and activated Pro. Each Date Shield Pro activation key
+            can be activated on up to 2 unique installations and cannot
             activate another Arthiva Shield product.
           </div>
 
+        </div>
+
+        <div class="buy-another-box">
+          <p>
+            Need Date Shield Pro on more installations? You can purchase
+            another license. Each new purchase generates a new Date Shield
+            Pro activation key with its own allowance of up to 2 unique
+            installations. Your current activation key is not extended or
+            reused.
+          </p>
+
+          <button
+            id="buyAnotherButton"
+            class="buy-another-button"
+            type="button"
+          >
+            Buy Another Date Shield Pro License
+          </button>
         </div>
 
       </div>
@@ -568,6 +617,12 @@ const price =
       );
 
 
+    const buyAnotherButton =
+      document.getElementById(
+        "buyAnotherButton"
+      );
+
+
     function setStatus(
       message,
       type = "info"
@@ -627,6 +682,12 @@ const price =
 
       payButton.textContent =
         "Pro Purchased";
+
+
+      if (buyAnotherButton) {
+        buyAnotherButton.disabled =
+          false;
+      }
 
 
       setStatus(
@@ -917,17 +978,27 @@ const price =
     }
 
 
-    async function handlePayment() {
+    async function handlePayment(
+      isAdditionalPurchase = false
+    ) {
 
       clearStatus();
 
 
-      activationBox.style.display =
-        "none";
+      if (!isAdditionalPurchase) {
+        activationBox.style.display =
+          "none";
+      }
 
 
       payButton.disabled =
         true;
+
+      if (buyAnotherButton) {
+        buyAnotherButton.disabled =
+          true;
+      }
+
 try {
 
         setStatus(
@@ -1044,6 +1115,11 @@ try {
 
         payButton.disabled =
           false;
+
+        if (buyAnotherButton) {
+          buyAnotherButton.disabled =
+            false;
+        }
 
       }
 
@@ -1206,7 +1282,17 @@ try {
 
     payButton.addEventListener(
       "click",
-      handlePayment
+      function () {
+        handlePayment(false);
+      }
+    );
+
+
+    buyAnotherButton.addEventListener(
+      "click",
+      function () {
+        handlePayment(true);
+      }
     );
 
 
