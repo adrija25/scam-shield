@@ -12,6 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const CHECKOUT_URL =
         "https://scam-shield-2sn.pages.dev/checkout.html";
 
+    const PRIVACY_URL =
+        "https://adrija25.github.io/arthiva-legal/scam-shield/privacy-policy.html";
+
+    const TERMS_URL =
+        "https://adrija25.github.io/arthiva-legal/scam-shield/terms-of-use.html";
+
     const PRO_TOKEN_KEY =
         "scamShieldProAccessToken";
 
@@ -51,9 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const upgradeButton =
         document.getElementById("upgradeButton");
-
-    const settingsButton =
-        document.getElementById("settingsButton");
 
     const privacyButton =
         document.getElementById("privacyButton");
@@ -192,8 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     (data) => {
 
                         if (
-                            chrome.runtime
-                                .lastError
+                            chrome.runtime.lastError
                         ) {
 
                             reject(
@@ -203,15 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             );
 
                             return;
-
                         }
-
 
                         const existingId =
                             data[
                                 INSTALLATION_ID_KEY
                             ];
-
 
                         if (
                             typeof existingId ===
@@ -224,26 +223,17 @@ document.addEventListener("DOMContentLoaded", () => {
                             );
 
                             return;
-
                         }
 
-
                         /*
-                            Create a random UUID for
-                            this Scam Shield installation.
+                            Random installation identifier.
 
-                            The ID does not contain the
-                            user's name, email address,
+                            It contains no name, email,
                             IP address, or device details.
-
-                            It exists only to enforce the
-                            allowed number of Scam Shield
-                            Pro installations.
                         */
 
                         const installationId =
                             crypto.randomUUID();
-
 
                         chrome.storage.local.set(
                             {
@@ -253,8 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             () => {
 
                                 if (
-                                    chrome.runtime
-                                        .lastError
+                                    chrome.runtime.lastError
                                 ) {
 
                                     reject(
@@ -264,9 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     );
 
                                     return;
-
                                 }
-
 
                                 resolve(
                                     installationId
@@ -341,10 +328,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         data.scamShieldDailyScans
                     ) || 0;
 
-
                 if (
-                    storedDate !==
-                    today
+                    storedDate !== today
                 ) {
 
                     scansUsed = 0;
@@ -358,7 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                 }
-
 
                 callback(
                     scansUsed
@@ -386,9 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             return;
-
         }
-
 
         getScanUsage((scansUsed) => {
 
@@ -419,14 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
         callback
     ) {
 
-        /*
-            Pro users have unlimited scans.
-
-            We do not increment the free-plan
-            daily scan counter for verified
-            Pro users.
-        */
-
         if (isProUser) {
 
             if (callback) {
@@ -434,9 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             return;
-
         }
-
 
         getScanUsage((scansUsed) => {
 
@@ -482,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
             if (currentPlanName) {
 
                 currentPlanName.textContent =
@@ -490,14 +461,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
             if (scansRemaining) {
 
                 scansRemaining.textContent =
                     "∞";
 
             }
-
 
             if (scanAllowance) {
 
@@ -515,7 +484,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
             if (upgradeCard) {
 
                 upgradeCard.classList.add(
@@ -523,7 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
             }
-
 
             if (proActiveCard) {
 
@@ -533,9 +500,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-
             return;
-
         }
 
 
@@ -548,14 +513,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (currentPlanName) {
 
             currentPlanName.textContent =
                 "Scam Shield Free";
 
         }
-
 
         if (scanAllowance) {
 
@@ -573,7 +536,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (upgradeCard) {
 
             upgradeCard.classList.remove(
@@ -582,7 +544,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (proActiveCard) {
 
             proActiveCard.classList.add(
@@ -590,7 +551,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         }
-
 
         updateScansRemaining();
 
@@ -610,10 +570,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-
         activationMessage.textContent =
             message;
-
 
         activationMessage.style.color =
             isError
@@ -633,7 +591,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const installationId =
             await getInstallationId();
-
 
         const response =
             await fetch(
@@ -659,9 +616,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
-
         let data;
-
 
         try {
 
@@ -675,7 +630,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         }
-
 
         if (
             !response.ok ||
@@ -692,7 +646,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (
             data.product !==
                 "scam-shield" ||
@@ -706,7 +659,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
         }
-
 
         return data;
 
@@ -723,12 +675,10 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-
         const token =
             activationCodeInput
                 .value
                 .trim();
-
 
         if (!token) {
 
@@ -738,9 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             return;
-
         }
-
 
         if (
             !/^[a-fA-F0-9]{64}$/.test(
@@ -754,9 +702,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             return;
-
         }
-
 
         if (activateProButton) {
 
@@ -768,18 +714,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         showActivationMessage(
             "Checking your purchase..."
         );
-
 
         try {
 
             await validateProToken(
                 token
             );
-
 
             chrome.storage.local.set(
                 {
@@ -792,8 +735,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 () => {
 
                     if (
-                        chrome.runtime
-                            .lastError
+                        chrome.runtime.lastError
                     ) {
 
                         showActivationMessage(
@@ -801,9 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             true
                         );
 
-                        if (
-                            activateProButton
-                        ) {
+                        if (activateProButton) {
 
                             activateProButton.disabled =
                                 false;
@@ -814,25 +754,18 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
 
                         return;
-
                     }
-
 
                     isProUser =
                         true;
 
-
                     updatePlanUI();
-
 
                     showActivationMessage(
                         "Scam Shield Pro is active."
                     );
 
-
-                    if (
-                        activationCodeInput
-                    ) {
+                    if (activationCodeInput) {
 
                         activationCodeInput.value =
                             "";
@@ -842,7 +775,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
 
-
         } catch (error) {
 
             console.error(
@@ -850,13 +782,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
 
-
             showActivationMessage(
                 error.message ||
                 "Unable to activate Scam Shield Pro.",
                 true
             );
-
 
             if (activateProButton) {
 
@@ -891,7 +821,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         PRO_TOKEN_KEY
                     ];
 
-
                 if (
                     !storedToken ||
                     data[
@@ -905,22 +834,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     updatePlanUI();
 
                     return;
-
                 }
-
 
                 try {
 
-                    /*
-                        Reuse the same permanent
-                        installation ID that was
-                        registered when Pro was
-                        originally activated.
-                    */
-
                     const installationId =
                         await getInstallationId();
-
 
                     const response =
                         await fetch(
@@ -946,16 +865,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             }
                         );
 
-
                     /*
-                        If the Arthiva server itself
-                        is temporarily unavailable,
-                        preserve the previously verified
-                        local Pro entitlement.
-
-                        This prevents a legitimate buyer
-                        from losing access just because
-                        of a temporary server outage.
+                        Temporary server failure:
+                        preserve previously verified
+                        local Pro access.
                     */
 
                     if (!response.ok) {
@@ -966,12 +879,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         updatePlanUI();
 
                         return;
-
                     }
 
-
                     let validationData;
-
 
                     try {
 
@@ -980,28 +890,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     } catch (error) {
 
-                        /*
-                            Invalid/unreadable server
-                            response is treated as a
-                            temporary validation failure.
-                        */
-
                         isProUser =
                             true;
 
                         updatePlanUI();
 
                         return;
-
                     }
-
-
-                    /*
-                        The server responded normally.
-
-                        Pro remains active only if the
-                        entitlement is explicitly valid.
-                    */
 
                     if (
                         validationData.success ===
@@ -1029,15 +924,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         updatePlanUI();
 
                         return;
-
                     }
 
-
                     /*
-                        The server definitively rejected
+                        Server definitively rejected
                         the entitlement.
-
-                        Remove the stored Pro state.
                     */
 
                     chrome.storage.local.remove(
@@ -1055,7 +946,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     );
 
-
                 } catch (error) {
 
                     console.error(
@@ -1063,15 +953,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         error
                     );
 
-
                     /*
-                        Network failure or temporary
-                        connection problem.
-
-                        Keep the previously verified
-                        local entitlement and try
-                        validation again when the
-                        popup is opened later.
+                        Network failure:
+                        preserve previously verified
+                        local Pro entitlement.
                     */
 
                     isProUser =
@@ -1101,7 +986,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        showView(errorView);
+        showView(
+            errorView
+        );
 
     }
 
@@ -1118,7 +1005,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 response.score ?? "--";
 
         }
-
 
         if (statusBadge) {
 
@@ -1140,10 +1026,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (
                 statusClass === "safe" ||
-                statusClass ===
-                    "suspicious" ||
-                statusClass ===
-                    "dangerous"
+                statusClass === "suspicious" ||
+                statusClass === "dangerous"
             ) {
 
                 statusBadge.classList.add(
@@ -1154,7 +1038,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (domainName) {
 
             domainName.textContent =
@@ -1162,7 +1045,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Unknown website";
 
         }
-
 
         if (httpsStatus) {
 
@@ -1173,14 +1055,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (formsCount) {
 
             formsCount.textContent =
                 response.forms ?? 0;
 
         }
-
 
         if (externalLinksCount) {
 
@@ -1189,14 +1069,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (passwordFieldsCount) {
 
             passwordFieldsCount.textContent =
                 response.passwordFields ?? 0;
 
         }
-
 
         if (paymentFieldsCount) {
 
@@ -1205,19 +1083,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         if (reasonsList) {
 
             reasonsList.innerHTML =
                 "";
 
-
             if (
                 Array.isArray(
                     response.reasons
                 ) &&
-                response.reasons.length >
-                    0
+                response.reasons.length > 0
             ) {
 
                 response.reasons.forEach(
@@ -1262,7 +1137,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-
         showView(
             resultsView
         );
@@ -1280,7 +1154,6 @@ document.addEventListener("DOMContentLoaded", () => {
             loadingView
         );
 
-
         chrome.runtime.sendMessage(
             {
                 action:
@@ -1289,8 +1162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (response) => {
 
                 if (
-                    chrome.runtime
-                        .lastError
+                    chrome.runtime.lastError
                 ) {
 
                     showError(
@@ -1301,14 +1173,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
-
                 }
-
 
                 if (
                     !response ||
-                    response.success ===
-                        false
+                    response.success === false
                 ) {
 
                     showError(
@@ -1317,9 +1186,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
                     return;
-
                 }
-
 
                 recordSuccessfulScan(
                     () => {
@@ -1343,19 +1210,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function runScan() {
 
-        /*
-            Verified Pro users bypass
-            the free daily scan limit.
-        */
-
         if (isProUser) {
 
             performScan();
 
             return;
-
         }
-
 
         getScanUsage((scansUsed) => {
 
@@ -1369,9 +1229,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
                 return;
-
             }
-
 
             performScan();
 
@@ -1393,7 +1251,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
     if (scanAgainButton) {
 
         scanAgainButton.addEventListener(
@@ -1402,7 +1259,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
     }
-
 
     if (tryAgainButton) {
 
@@ -1456,7 +1312,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
     if (activationCodeInput) {
 
         activationCodeInput.addEventListener(
@@ -1464,33 +1319,12 @@ document.addEventListener("DOMContentLoaded", () => {
             (event) => {
 
                 if (
-                    event.key ===
-                    "Enter"
+                    event.key === "Enter"
                 ) {
 
                     activatePro();
 
                 }
-
-            }
-        );
-
-    }
-
-
-    // -----------------------------------------
-    // SETTINGS BUTTON
-    // -----------------------------------------
-
-    if (settingsButton) {
-
-        settingsButton.addEventListener(
-            "click",
-            () => {
-
-                alert(
-                    "Scam Shield Settings will be available here."
-                );
 
             }
         );
@@ -1508,9 +1342,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                alert(
-                    "Scam Shield Privacy Policy will be available here."
-                );
+                chrome.tabs.create({
+                    url:
+                        PRIVACY_URL
+                });
 
             }
         );
@@ -1528,9 +1363,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "click",
             () => {
 
-                alert(
-                    "Scam Shield Terms of Use will be available here."
-                );
+                chrome.tabs.create({
+                    url:
+                        TERMS_URL
+                });
 
             }
         );
@@ -1546,9 +1382,7 @@ document.addEventListener("DOMContentLoaded", () => {
         scanView
     );
 
-
     restoreProAccess();
-
 
     updateScansRemaining();
 
