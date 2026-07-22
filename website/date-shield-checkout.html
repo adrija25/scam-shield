@@ -258,27 +258,6 @@
     }
 
 
-    .purchased-state {
-      display: none;
-      margin-top: 18px;
-    }
-
-    .purchased-state.visible {
-      display: block;
-    }
-
-    .purchased-button {
-      width: 100%;
-      padding: 14px 18px;
-      border: none;
-      border-radius: 10px;
-      background: #9b8bb8;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: default;
-    }
-
     .buy-another-box {
       margin-top: 18px;
       padding: 16px;
@@ -432,19 +411,6 @@
         id="activationBox"
         class="activation-box"
       >
-
-        <div
-          id="purchasedState"
-          class="purchased-state"
-        >
-          <button
-            class="purchased-button"
-            type="button"
-            disabled
-          >
-            Pro Purchased
-          </button>
-        </div>
 
         <h3>
           Your Date Shield Pro Activation Key
@@ -605,12 +571,6 @@ const price =
       );
 
 
-    const purchasedState =
-      document.getElementById(
-        "purchasedState"
-      );
-
-
     const copyButton =
       document.getElementById(
         "copyButton"
@@ -669,11 +629,6 @@ const price =
 
       activationBox.style.display =
         "block";
-
-
-      purchasedState.classList.add(
-        "visible"
-      );
 
 
       payButton.disabled =
