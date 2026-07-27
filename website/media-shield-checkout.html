@@ -440,7 +440,7 @@
             class="buy-another-button"
             type="button"
           >
-            Buy Another Media Shield Pro License
+            Buy Another Media Shield Pro Licence
           </button>
 
         </div>
@@ -499,32 +499,37 @@
     const buyAnotherButton =
       document.getElementById("buyAnotherButton");
 
+    let currentActivationToken =
+      "";
+
 
     function setStatus(
       message,
       type = "info"
     ) {
       statusBox.textContent = message;
-      statusBox.className = "status " + type;
+      statusBox.className =
+        "status " + type;
     }
 
 
     function clearStatus() {
       statusBox.textContent = "";
-      statusBox.className = "status";
+      statusBox.className =
+        "status";
     }
 
 
     function showActivationKey(token) {
 
       if (!token) {
-        return;
+        throw new Error(
+          "Payment was verified, but no Media Shield activation key was returned."
+        );
       }
 
-      localStorage.setItem(
-        "mediaShieldProToken",
-        token
-      );
+      currentActivationToken =
+        token;
 
       activationKey.textContent =
         token;
@@ -544,9 +549,30 @@
       }
 
       setStatus(
-        "Payment verified. Copy your activation key, then open Media Shield and activate Pro.",
+        "Payment verified. Copy your new activation key, then open Media Shield and activate Pro.",
         "success"
       );
+    }
+
+
+    function prepareAdditionalPurchase() {
+
+      currentActivationToken =
+        "";
+
+      activationKey.textContent =
+        "";
+
+      activationBox.style.display =
+        "none";
+
+      payButton.disabled =
+        false;
+
+      payButton.textContent =
+        "Unlock Media Shield Pro";
+
+      clearStatus();
     }
 
 
@@ -555,6 +581,7 @@
       async function () {
 
         const token =
+          currentActivationToken ||
           activationKey.textContent.trim();
 
         if (!token) {
@@ -629,7 +656,6 @@
 
 
     async function verifyRazorpayPayment(
-      paymentData,
       payment
     ) {
 
@@ -680,11 +706,19 @@
         );
       }
 
+      if (!data.proAccessToken) {
+        throw new Error(
+          "Payment was verified, but no Media Shield activation key was returned."
+        );
+      }
+
       return data;
     }
 
 
-    function openRazorpay(paymentData) {
+    function openRazorpay(
+      paymentData
+    ) {
 
       if (
         typeof Razorpay ===
@@ -727,7 +761,6 @@
 
               const result =
                 await verifyRazorpayPayment(
-                  paymentData,
                   payment
                 );
 
@@ -743,16 +776,9 @@
                 "error"
               );
 
-            } finally {
+              payButton.disabled =
+                false;
 
-              if (
-                !localStorage.getItem(
-                  "mediaShieldProToken"
-                )
-              ) {
-                payButton.disabled =
-                  false;
-              }
             }
           },
 
@@ -775,6 +801,11 @@
 
           payButton.disabled =
             false;
+
+          if (buyAnotherButton) {
+            buyAnotherButton.disabled =
+              false;
+          }
         }
       );
 
@@ -782,16 +813,9 @@
     }
 
 
-    async function handlePayment(
-      isAdditionalPurchase = false
-    ) {
+    async function handlePayment() {
 
       clearStatus();
-
-      if (!isAdditionalPurchase) {
-        activationBox.style.display =
-          "none";
-      }
 
       payButton.disabled =
         true;
@@ -867,16 +891,6 @@
           localStorage.setItem(
             "mediaShieldPayPalOrderId",
             paymentData.orderId
-          );
-
-          localStorage.setItem(
-            "mediaShieldPayPalProduct",
-            PRODUCT
-          );
-
-          localStorage.setItem(
-            "mediaShieldPayPalOffer",
-            OFFER
           );
 
           window.location.href =
@@ -985,16 +999,14 @@
           );
         }
 
+        if (!data.proAccessToken) {
+          throw new Error(
+            "Payment was verified, but no Media Shield activation key was returned."
+          );
+        }
+
         localStorage.removeItem(
           "mediaShieldPayPalOrderId"
-        );
-
-        localStorage.removeItem(
-          "mediaShieldPayPalProduct"
-        );
-
-        localStorage.removeItem(
-          "mediaShieldPayPalOffer"
         );
 
         showActivationKey(
@@ -1020,16 +1032,9 @@
           "error"
         );
 
-      } finally {
+        payButton.disabled =
+          false;
 
-        if (
-          !localStorage.getItem(
-            "mediaShieldProToken"
-          )
-        ) {
-          payButton.disabled =
-            false;
-        }
       }
     }
 
@@ -1037,7 +1042,7 @@
     payButton.addEventListener(
       "click",
       function () {
-        handlePayment(false);
+        handlePayment();
       }
     );
 
@@ -1045,22 +1050,12 @@
     buyAnotherButton.addEventListener(
       "click",
       function () {
-        handlePayment(true);
+
+        prepareAdditionalPurchase();
+
+        handlePayment();
       }
     );
-
-
-    const savedMediaShieldProToken =
-      localStorage.getItem(
-        "mediaShieldProToken"
-      );
-
-
-    if (savedMediaShieldProToken) {
-      showActivationKey(
-        savedMediaShieldProToken
-      );
-    }
 
 
     handlePayPalReturn();
