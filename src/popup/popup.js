@@ -1226,8 +1226,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 showError(
     "You have used your 20 free scans for today. Upgrade to Scam Shield Pro for unlimited scans."
 );
-                );
-
                 return;
             }
 
