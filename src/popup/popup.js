@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // CONFIGURATION
     // -----------------------------------------
 
-    const FREE_DAILY_SCAN_LIMIT = 5;
+    const FREE_DAILY_SCAN_LIMIT = 20;
 
     const ARTHIVA_API_BASE =
         "https://arthiva-labs.pages.dev";
